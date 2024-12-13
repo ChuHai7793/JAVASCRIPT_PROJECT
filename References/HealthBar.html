@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health Bar</title>
+    <style>
+        #health-bar-container {
+            width: 300px;
+            height: 30px;
+            background-color: #ccc;
+            border: 2px solid #000;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        #health-bar {
+            width: 100%;
+            height: 100%;
+            background-color: #4caf50;
+            transition: width 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+<div id="health-bar-container">
+    <div id="health-bar"></div>
+</div>
+<script>
+    let health = 100;
+
+    function updateHealth(value) {
+        health = Math.max(0, Math.min(100, health + value));
+        const healthBar = document.getElementById('health-bar');
+        healthBar.style.width = `${health}%`;
+
+        if (health > 50) {
+            healthBar.style.backgroundColor = '#4caf50';
+        } else if (health > 20) {
+            healthBar.style.backgroundColor = '#ffc107';
+        } else {
+            healthBar.style.backgroundColor = '#f44336';
+        }
+    }
+
+    document.addEventListener('click', () => updateHealth(-10));
+</script>
+</body>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<script>
+
+
+  /*------------------------------ Ignore Events from Other Keys While a Key is Held----------------*/
+
+  let currentKey = null; // Tracks the currently active key
+
+  document.addEventListener('keydown', (event) => {
+    if (currentKey && currentKey !== event.key) {
+      console.log(`Ignoring key: ${event.key} because ${currentKey} is held down`);
+      return; // Ignore other keys if one is already active
+    }
+
+    if (!currentKey) {
+      currentKey = event.key; // Set the active key
+      console.log(`Key down: ${event.key}`);
+      // Add any processing logic here
+    }
+  });
+
+  document.addEventListener('keyup', (event) => {
+    if (event.key === currentKey) {
+      console.log(`Key up: ${event.key}`);
+      currentKey = null; // Reset when the key is released
+    }
+  });
+
+  /*------------------------------Detect Multi-Key Holds with Prioritization -------------------------*/
+
+  // let priorityKey = null;
+  //
+  // document.addEventListener('keydown', (event) => {
+  //   if (!priorityKey) {
+  //     priorityKey = event.key; // Set the priority key
+  //     console.log(`Priority key set: ${priorityKey}`);
+  //   } else if (priorityKey !== event.key) {
+  //     console.log(`Ignoring ${event.key}, ${priorityKey} is active`);
+  //     return;
+  //   }
+  // });
+  //
+  // document.addEventListener('keyup', (event) => {
+  //   if (event.key === priorityKey) {
+  //     console.log(`Priority key released: ${priorityKey}`);
+  //     priorityKey = null; // Reset when the key is released
+  //   }
+  // });
+</script>
+
+</body>
+</html>

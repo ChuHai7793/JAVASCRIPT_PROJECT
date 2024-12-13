@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="myButton">sadddddddddddddd</div>
+<script>
+
+    const button = document.getElementById('myButton');
+    let isEventInProgress = false;
+
+    async function handleClick(event) {
+        if (isEventInProgress) {
+            console.log('Event ignored: already in progress');
+            return;
+        }
+
+        isEventInProgress = true; // Set flag to indicate the event is in progress
+        console.log('Event started');
+
+        try {
+            // Simulate async operation
+            await new Promise((resolve) => {
+                setTimeout(resolve, 2000)
+            }); // Wait 2 seconds
+            console.log('Event completed');
+        } catch (error) {
+            console.error('Error during event handling:', error);
+        } finally {
+            isEventInProgress = false; // Reset flag
+        }
+    }
+
+    button.addEventListener('click', handleClick);
+
+
+</script>
+</body>
+</html>

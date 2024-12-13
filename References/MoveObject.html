@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        #character {
+            position: absolute;
+            top: 100px;
+            left: 0px;
+            width: 50px;
+            height: 50px;
+            background-color: blue;
+        }
+    </style>
+</head>
+<body>
+<div id="character"></div>
+<script>
+    const character = document.getElementById("character");
+    let positionX = 0; // Initial horizontal position
+    const speed = 5; // Speed in pixels per frame
+    let isRunning = false; // Flag to track if the character is running
+    let animationId; // Store the animation frame ID
+
+    // Function to move the character
+    function run() {
+        if (!isRunning) return; // Stop if not running
+        positionX += speed; // Update horizontal position
+        character.style.left = positionX + "px"; // Apply new position
+        animationId = requestAnimationFrame(run); // Continue animation
+    }
+
+    // Function to start running
+    function startRunning() {
+        if (!isRunning) {
+            isRunning = true;
+            run(); // Start animation loop
+        }
+    }
+
+    // Function to stop running
+    function stopRunning() {
+        isRunning = false;
+        cancelAnimationFrame(animationId); // Stop animation loop
+    }
+
+    // Add event listeners for keypress
+    document.addEventListener("keydown", (e) => {
+        if (e.key === "ArrowRight") { // Start running when pressing the right arrow key
+            startRunning();
+        }
+    });
+
+    document.addEventListener("keyup", (e) => {
+        if (e.key === "ArrowRight") { // Stop running when releasing the right arrow key
+            stopRunning();
+        }
+    });
+
+
+
+</script>
+</body>
+</html>
