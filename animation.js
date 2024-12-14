@@ -1,5 +1,5 @@
 import {Character} from './Character.js'
-import {Enemy, generateEnemy} from './Enemy.js'
+import {generateEnemy} from './Enemy.js'
 import {generateItem} from './Item.js'
 
 export const GAME_CANVAS = document.getElementById('background');
@@ -45,6 +45,8 @@ function animate(character,enemyList,itemList,FrameStats) {
 
     ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
 
+
+    /*------------------ CHARACTER ---------------------------*/
     character.draw(character.characterImg);
 
     /*------------------ ENEMY ---------------------------*/
@@ -87,13 +89,6 @@ function animate(character,enemyList,itemList,FrameStats) {
 
         if (isColliding(item,character)) {
             item.reset();
-            // TEMPORARILY SET HITBOX OF ENEMY TO PREVENT COLLISION
-            // enemy.x_hitbox = 0;
-            // enemy.y_hitbox = 0;
-            // enemy.width_hitbox = 0;
-            // enemy.height_hitbox = 0;
-            // updateHealth(-10);
-
 
         }
     }
@@ -137,6 +132,16 @@ const PLAYER = new Character('resources/Idle.png');
 
 
 animate(PLAYER,enemyList,itemList,PLAYER.FrameStats)
+
+
+
+
+
+
+
+
+
+
 
 
 

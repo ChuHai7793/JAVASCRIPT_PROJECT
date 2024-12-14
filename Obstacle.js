@@ -1,4 +1,4 @@
-import {ctx, gameFrame} from "./animation.js";
+import { ctx } from "./animation.js";
 
 
 export class Obstacle {
@@ -24,10 +24,7 @@ export class Obstacle {
         this.y_hitbox = this.y;
         this.width_hitbox = this.width;
         this.height_hitbox = this.height;
-        // SLOW DOWN ANIMATION
-        if (gameFrame % 4=== 0){
-            this.frame > 4 ? this.frame = 0 : this.frame++ ;
-        }
+
     }
 
     draw(){

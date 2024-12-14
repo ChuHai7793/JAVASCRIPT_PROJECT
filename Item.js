@@ -15,10 +15,7 @@ export class Item extends Obstacle {
 
     update() {
 
-        this.x_hitbox = this.x;
-        this.y_hitbox = this.y;
-        this.width_hitbox = this.width;
-        this.height_hitbox = this.height;
+        super.update();
         // SLOW DOWN ANIMATION
         if (gameFrame % 5=== 0){
             this.frame > 8 ? this.frame = 0 : this.frame++ ;
