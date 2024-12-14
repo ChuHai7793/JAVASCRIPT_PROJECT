@@ -30,11 +30,6 @@ export class Character {
         this.gravity = 10;
         this.isRunning = false;
 
-        // Initialize hit box
-        // this.x_hitbox;
-        // this.y_hitbox ;
-        // this.width_hitbox = this.width;
-        // this.height_hitbox = this.height;
     }
     /* ------------------------------ HORIZONTAL MOVEMENT ------------------------------*/
     // Function to move the character
@@ -48,7 +43,6 @@ export class Character {
             // Continue animation
             this.animationId = requestAnimationFrame(()=>{this.run(units)});
         }
-
 
     }
 
@@ -80,7 +74,6 @@ export class Character {
 
     moveUp(units) {
         this.y -= units;
-
     }
 
     jump(event){
@@ -105,10 +98,12 @@ export class Character {
                 clearInterval(interval);
 
                 // When there is no other events then set to idle
-                if (this.isRunning){
-                    this.state = 'Run';
-                } else {
-                    this.state = 'Idle';
+                if ( this.state !== 'Dead' ){
+                    if (this.isRunning){
+                        this.state = 'Run';
+                    } else {
+                        this.state = 'Idle';
+                    }
                 }
 
                 this.setAnimation();
@@ -122,7 +117,7 @@ export class Character {
         if (this.direction === 'left'){
             ctx.save();
             ctx.translate(CANVAS_WIDTH, 0); // Move the origin to the right edge
-            ctx.scale(-1, 1); // Flip
+            ctx.scale(-1, 1); // Flip the whole canvas
 
             this.x_hitbox = CANVAS_WIDTH - this.width-this.x + 100;
             this.y_hitbox = this.y + 130;
@@ -172,7 +167,7 @@ export class Character {
 
             case 'Dead':
                 this.FrameStats.maxFrames = 4;
-                this.FrameStats.staggerFrames = 20;
+                this.FrameStats.staggerFrames = 32;
                 break;
             case 'Shoot':
                 this.FrameStats.maxFrames = 3;

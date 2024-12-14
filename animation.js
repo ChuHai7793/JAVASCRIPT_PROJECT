@@ -1,5 +1,6 @@
 import {Character} from './Character.js'
 import {Enemy, generateEnemy} from './Enemy.js'
+import {generateItem} from './Item.js'
 
 export const GAME_CANVAS = document.getElementById('background');
 export const ctx = GAME_CANVAS.getContext('2d');
@@ -17,7 +18,6 @@ let health = 100;
 
 function updateHealth(value) {
 
-
         health = Math.max(0, Math.min(100, health + value));
         const healthBar = document.getElementById('health-bar');
         healthBar.style.width = `${health}%`;
@@ -29,11 +29,6 @@ function updateHealth(value) {
         } else {
             healthBar.style.backgroundColor = '#f44336';
         }
-
-    // } else {
-    //     setTimeout(()=>{invulnerableFLAG = false}, 2000);
-    // }
-
 }
 
 
@@ -46,38 +41,35 @@ function isColliding(obj1, obj2) {
     );
 }
 
-function animate(character,enemyList,FrameStats) {
+function animate(character,enemyList,itemList,FrameStats) {
 
     ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
 
     character.draw(character.characterImg);
 
-
     /*------------------ ENEMY ---------------------------*/
 
     for ( let enemy of enemyList) {
-
 
         enemy.update();
         enemy.draw();
         if (enemy.y > CANVAS_HEIGHT - enemy.height|| enemy.x < 0 ) {
 
             enemy.reset();
-            // TEMPORARY SET HITBOX OF ENEMY TO PREVENT COLLISION
-            enemy.x_hitbox = 0;
-            enemy.y_hitbox = 0;
-            enemy.width_hitbox = 0;
-            enemy.height_hitbox = 0;
+            // // TEMPORARILY SET HITBOX OF ENEMY TO PREVENT COLLISION
+            // enemy.x_hitbox = 0;
+            // enemy.y_hitbox = 0;
+            // enemy.width_hitbox = 0;
+            // enemy.height_hitbox = 0;
         }
 
         if (isColliding(enemy,character)) {
             enemy.reset();
-            // TEMPORARY SET HITBOX OF ENEMY TO PREVENT COLLISION
-            enemy.x_hitbox = 0;
-            enemy.y_hitbox = 0;
-            enemy.width_hitbox = 0;
-            enemy.height_hitbox = 0;
-
+            // TEMPORARILY SET HITBOX OF ENEMY TO PREVENT COLLISION
+            // enemy.x_hitbox = 0;
+            // enemy.y_hitbox = 0;
+            // enemy.width_hitbox = 0;
+            // enemy.height_hitbox = 0;
             updateHealth(-10);
 
             if (health <= 0) {
@@ -87,7 +79,27 @@ function animate(character,enemyList,FrameStats) {
         }
     }
 
+    /*------------------ ITEM ---------------------------*/
+    for ( let item of itemList) {
+        item.update();
+        item.draw();
 
+
+        if (isColliding(item,character)) {
+            item.reset();
+            // TEMPORARILY SET HITBOX OF ENEMY TO PREVENT COLLISION
+            // enemy.x_hitbox = 0;
+            // enemy.y_hitbox = 0;
+            // enemy.width_hitbox = 0;
+            // enemy.height_hitbox = 0;
+            // updateHealth(-10);
+
+
+        }
+    }
+
+
+    /*------------------ SLOW DOWN ANIMATION ---------------------------*/
     if (gameFrame % FrameStats.staggerFrames=== 0){
 
         if (frameX < FrameStats.maxFrames ) {
@@ -95,8 +107,6 @@ function animate(character,enemyList,FrameStats) {
         } else {
             if (character.state !== 'Dead'){
                 frameX = 0;
-            } else {
-
             }
         }
         gameFrame = 0;
@@ -105,9 +115,7 @@ function animate(character,enemyList,FrameStats) {
 
     gameFrame++;// MOVE TO NEXT FRAME
 
-
-
-    requestAnimationFrame(()=>{animate(character,enemyList,FrameStats)});
+    requestAnimationFrame(()=>{animate(character,enemyList,itemList,FrameStats)});
 }
 
 
@@ -116,114 +124,69 @@ function animate(character,enemyList,FrameStats) {
 /*---------------- ENEMY INITIALIZATION --------------------*/
 
 
-
-
-
-
-
-
 let enemyList = generateEnemy();
+/*---------------- ITEM INITIALIZATION --------------------*/
 
-
-
-
-
+let itemList = generateItem();
 /*---------------- PLAYER INITIALIZATION --------------------*/
 const gangsterImg = new Image();
 gangsterImg.src = 'resources/Idle.png';
 
 const PLAYER = new Character('resources/Idle.png');
 // PLAYER.characterImg.src = 'resources/Run.png';
-animate(PLAYER,enemyList,PLAYER.FrameStats)
 
-// const PLAYER2 = new Character('resources/Idle.png');
-// animate(PLAYER2,PLAYER2.FrameStats)
 
+animate(PLAYER,enemyList,itemList,PLAYER.FrameStats)
 
 
 
-
-
-/*--------------------------- EVENTS --------------------------------*/
-// let isEventInProgress = false;
-//
-//
-// async function handleEvent(event,func) {
-//     if (isEventInProgress) {
-//         console.log('Event ignored: already in progress');
-//         return;
-//     }
-//
-//     isEventInProgress = true; // Set flag to indicate the event is in progress
-//     console.log('Event started');
-//
-//     try {
-//         // Simulate async operation
-//         await new Promise((resolve) => {
-//             setTimeout(resolve, 2000)
-//         }); // Wait 2 seconds
-//         console.log('Event completed');
-//     } catch (error) {
-//         console.error('Error during event handling:', error);
-//     } finally {
-//         isEventInProgress = false; // Reset flag
-//     }
-// }
-
+/*---------------- EVENT HANDLING --------------------*/
 let bodyElement = document.getElementsByTagName("body")[0];
 bodyElement.addEventListener("keydown", (event) => {
 
-    switch (event.key) {
-        case 'z':
-            PLAYER.state = 'Run';
-            PLAYER.direction = 'left';
-            PLAYER.setAnimation();
-            PLAYER.moveLeft(5);
-            break;
-        case 'c':
-            PLAYER.state = 'Run';
-            PLAYER.direction = 'right';
-            PLAYER.setAnimation();
-            PLAYER.moveRight(5);
-            break;
-        case 's':
-            if (event.key === 's'){
-                if(PLAYER.state !== 'Jump'){
-                    PLAYER.state = 'Jump';
-                    PLAYER.setAnimation();
-                    PLAYER.jump(event);
+    if ( PLAYER.state !== 'Dead') {
+        switch (event.key) {
+            case 'z':
+                PLAYER.state = 'Run';
+                PLAYER.direction = 'left';
+                PLAYER.setAnimation();
+                PLAYER.moveLeft(5);
+                break;
+            case 'c':
+                PLAYER.state = 'Run';
+                PLAYER.direction = 'right';
+                PLAYER.setAnimation();
+                PLAYER.moveRight(5);
+                break;
+            case 's':
+                if (event.key === 's') {
+                    if (PLAYER.state !== 'Jump') {
+                        PLAYER.state = 'Jump';
+                        PLAYER.setAnimation();
+                        PLAYER.jump(event);
+                    }
                 }
-            }
-            break;
-        case 'u':
-            PLAYER.state = 'Shoot';
-            PLAYER.setAnimation();
+                break;
+            case 'u':
+                PLAYER.state = 'Shoot';
+                PLAYER.setAnimation();
+        }
     }
 });
 
 
 bodyElement.addEventListener("keyup", (event) => {
+    if (PLAYER.state !== 'Dead'){
+        if ((event.key === 'z'||event.key === 'c')){
 
+            PLAYER.stopRunning();
 
-    if ((event.key === 'z'||event.key === 'c')){
-        // if (currentKey!=='s' && currentKey !== event.key){
-        //
-        // }
-        // console.log(currentKey);
-        // console.log(event.key );
-        // console.log(PLAYER.state);
-        // if (event.key === currentKey){
-        //     PLAYER.stopRunning();
-        // }
-        PLAYER.stopRunning();
+        }
 
-
-    }
-
-    if (PLAYER.state !== 'Jump'){
-        // event.stopPropagation();
-        PLAYER.state = 'Idle';
-        PLAYER.setAnimation();
+        if (PLAYER.state !== 'Jump' ){
+            PLAYER.state = 'Idle';
+            PLAYER.setAnimation();
+        }
     }
 })
 

@@ -1,29 +1,15 @@
 /*---------------- MAIN INITIALIZATION --------------------*/
-import {GAME_CANVAS,ctx,CANVAS_WIDTH,CANVAS_HEIGHT} from './animation.js'
 import {gameFrame} from './animation.js'
+import {Obstacle} from "./Obstacle.js";
 
 
+export class Enemy  extends Obstacle {
+    constructor(ObstacleImg,x,y,width,height,spriteWidth,spriteHeight,speed,angle) {
+        super(ObstacleImg,x,y,width,height,spriteWidth,spriteHeight,speed,angle)
 
-export class Enemy {
-    constructor(EnemyImg,x,y,width,height,spriteWidth,spriteHeight,speed,angle) {
-
-        this.EnemyImg = EnemyImg;
-        // this.x = Math.random() * CANVAS_WIDTH;
-        // this.y = Math.random() * CANVAS_HEIGHT;
         this.x_reset = x;
         this.y_reset = y;
-        this.x = x; // Position x on the canvas
-        this.y = y; // Position y on the canvas
-        this.width = width; // size of enemy object
-        this.height = height;
-        this.spriteWidth = spriteWidth;
-        this.spriteHeight = spriteHeight;
 
-
-        this.speed = speed; // the magnitude of vector for enemy movement
-        this.angle = angle* Math.PI / 180; // angle for the speed vector
-
-        this.frame = 0; // used to slide through sprite for animation
     }
 
     reset(){
@@ -44,11 +30,11 @@ export class Enemy {
         }
     }
 
-    draw(){
-
-        ctx.strokeRect(this.x_hitbox,this.y_hitbox,this.width_hitbox,this.height_hitbox);
-        ctx.drawImage(this.EnemyImg,this.frame *this.spriteWidth,0,this.spriteWidth,this.spriteHeight,this.x,this.y,this.width,this.height);
-    }
+    // draw(){
+    //
+    //     ctx.strokeRect(this.x_hitbox,this.y_hitbox,this.width_hitbox,this.height_hitbox);
+    //     ctx.drawImage(this.ObstacleImg,this.frame *this.spriteWidth,0,this.spriteWidth,this.spriteHeight,this.x,this.y,this.width,this.height);
+    // }
 }
 
 export function generateEnemy(){
@@ -63,13 +49,29 @@ export function generateEnemy(){
     }
 
 
-    const Enemy2_Img = new Image();
-    Enemy2_Img.src = 'resources/enemy/enemy2.png';
-    const ENEMY2_NUMBER = 3;
-    for (let i=1; i<= ENEMY2_NUMBER;i++){
-        enemyList.push(new Enemy(Enemy2_Img,CANVAS_WIDTH,0,100,80,
-            266,160,Math.random()*3+3,90+Math.random()*90));
-    }
+    // const Enemy2_Img = new Image();
+    // Enemy2_Img.src = 'resources/enemy/enemy2.png';
+    // const ENEMY2_NUMBER = 3;
+    // for (let i=1; i<= ENEMY2_NUMBER;i++){
+    //     enemyList.push(new Enemy(Enemy2_Img,CANVAS_WIDTH,0,100,80,
+    //         266,160,Math.random()*3+3,90+Math.random()*90));
+    // }
+    //
+    // const Enemy3_Img = new Image();
+    // Enemy3_Img.src = 'resources/enemy/enemy3.png';
+    // const ENEMY3_NUMBER = 3;
+    // for (let i=1; i<= ENEMY3_NUMBER;i++){
+    //     enemyList.push(new Enemy(Enemy3_Img,CANVAS_WIDTH,0,100,80,
+    //         218,177,Math.random()*3+1,90+Math.random()*90));
+    // }
+    //
+    // const Enemy4_Img = new Image();
+    // Enemy4_Img.src = 'resources/enemy/enemy4.png';
+    // const ENEMY4_NUMBER = 3;
+    // for (let i=1; i<= ENEMY4_NUMBER;i++){
+    //     enemyList.push(new Enemy(Enemy4_Img,CANVAS_WIDTH,100,100,80,
+    //         213,212,Math.random()*3+1,180));
+    // }
 
     return enemyList
 }
