@@ -1,0 +1,38 @@
+
+#game-header{
+    font-family: 'Press Start 2P', cursive;
+    font-size: 5rem;
+}
+
+
+#start-button,#setting-button {
+    display: inline-block;
+
+    width: 250px;
+    margin: 30px 0 0;
+    padding: 15px 30px; /* Padding for size */
+    border: 3px solid #005500; /* Darker green border */
+    border-radius: 5px; /* Slightly rounded corners */
+
+
+    background-color: #007700; /* Retro green */
+    color: #fff; /* White text */
+    font-family: 'Press Start 2P', cursive; /* Retro pixel font */
+    font-size: 1.5rem; /* Large text size */
+
+    text-align: center;
+    text-shadow: 2px 2px 0px #003300; /* Retro shadow effect */
+    cursor: pointer;
+    transition: all 0.2s ease-in-out; /* Smooth hover effect */
+}
+
+#start-button:hover,#setting-button:hover  {
+    background-color: #00aa00; /* Lighter green on hover */
+    border-color: #007700; /* Slight border change */
+    transform: scale(1.1); /* Slight zoom effect */
+}
+
+#start-button:active,#setting-button:active  {
+    background-color: #005500; /* Darker green when pressed */
+    transform: scale(0.95); /* Slight shrink effect */
+}

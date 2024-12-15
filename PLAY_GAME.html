@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="css/styleGame.css">
+</head>
+<body>
+
+
+<canvas id="background"  width="1500px" height="680px" ></canvas>
+<canvas id="gangsterCanvas"></canvas>
+
+<div id="health-bar-container">
+    <div id="health-bar"></div>
+</div>
+
+<div id="score-board">0</div>
+
+<div id="level-display">LEVEL 1</div>
+
+<div id="dead-display-container">
+    YOU DIE
+    <button id="restart-button" onclick="window.location.reload()">RESTART</button>
+    <a href="index.html"><button id="main-menu-button">BACK TO MAIN MENU</button></a>
+</div>
+
+
+
+
+<script src="animation.js" type = 'module'></script>
+
+</body>
+</html>

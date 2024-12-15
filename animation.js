@@ -2,6 +2,9 @@ import {Character} from './Character.js'
 import {generateEnemy} from './Enemy.js'
 import {generateItem} from './Item.js'
 
+
+
+
 export const GAME_CANVAS = document.getElementById('background');
 export const ctx = GAME_CANVAS.getContext('2d');
 export const CANVAS_WIDTH = GAME_CANVAS.width;
@@ -10,25 +13,66 @@ export const CANVAS_HEIGHT = GAME_CANVAS.height;
 
 export const OFFSET_X = 0;
 export const OFFSET_Y = 425;
-export let frameX  = 0 ;
+export let frameX = 0;
 export let frameY = 0;
 export let gameFrame = 0;
+
+const deadDisplayContainer = document.getElementById('dead-display-container');
+
+
+let score = 0;
+let level = 1;
 let health = 100;
+
+
+function updateScore() {
+    // IF NEXT LEVEL RETURN TRUE, ELSE FALSE
+    const scoreBoard = document.getElementById('score-board');
+    const levelDisplay = document.getElementById('level-display');
+    score += 1;
+    scoreBoard.innerText = score;
+
+    // SET LEVEL
+    switch (score){
+        case 1:
+            level++;
+            levelDisplay.innerText = 'LEVEL ' + level;
+            return true
+
+        case 2:
+            level++;
+            levelDisplay.innerText = 'LEVEL ' + level;
+            return true
+
+        case 3:
+            level++;
+            levelDisplay.innerText = 'LEVEL ' + level;
+            return true
+
+        case 4:
+            level++;
+            levelDisplay.innerText = 'LEVEL ' + level;
+            return true
+    }
+    return false;
+}
+
+
 
 
 function updateHealth(value) {
 
-        health = Math.max(0, Math.min(100, health + value));
-        const healthBar = document.getElementById('health-bar');
-        healthBar.style.width = `${health}%`;
+    health = Math.max(0, Math.min(100, health + value));
+    const healthBar = document.getElementById('health-bar');
+    healthBar.style.width = `${health}%`;
 
-        if (health > 50) {
-            healthBar.style.backgroundColor = '#4caf50';
-        } else if (health > 20) {
-            healthBar.style.backgroundColor = '#ffc107';
-        } else {
-            healthBar.style.backgroundColor = '#f44336';
-        }
+    if (health > 50) {
+        healthBar.style.backgroundColor = '#4caf50';
+    } else if (health > 20) {
+        healthBar.style.backgroundColor = '#ffc107';
+    } else {
+        healthBar.style.backgroundColor = '#f44336';
+    }
 }
 
 
@@ -41,7 +85,9 @@ function isColliding(obj1, obj2) {
     );
 }
 
-function animate(character,enemyList,itemList,FrameStats) {
+
+
+function animate(character, Obstacles, FrameStats) {
 
     ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
 
@@ -51,56 +97,62 @@ function animate(character,enemyList,itemList,FrameStats) {
 
     /*------------------ ENEMY ---------------------------*/
 
-    for ( let enemy of enemyList) {
+    for (let enemy of Obstacles['enemyList']) {
 
         enemy.update();
         enemy.draw();
-        if (enemy.y > CANVAS_HEIGHT - enemy.height|| enemy.x < 0 ) {
-
+        if (enemy.y > CANVAS_HEIGHT - enemy.height || enemy.y < 0 ||
+            enemy.x > CANVAS_WIDTH - enemy.width || enemy.x < 0 ) {
             enemy.reset();
-            // // TEMPORARILY SET HITBOX OF ENEMY TO PREVENT COLLISION
-            // enemy.x_hitbox = 0;
-            // enemy.y_hitbox = 0;
-            // enemy.width_hitbox = 0;
-            // enemy.height_hitbox = 0;
         }
 
-        if (isColliding(enemy,character)) {
+        if (isColliding(enemy, character)) {
             enemy.reset();
-            // TEMPORARILY SET HITBOX OF ENEMY TO PREVENT COLLISION
-            // enemy.x_hitbox = 0;
-            // enemy.y_hitbox = 0;
-            // enemy.width_hitbox = 0;
-            // enemy.height_hitbox = 0;
             updateHealth(-10);
 
             if (health <= 0) {
                 character.state = 'Dead';
                 character.setAnimation();
+                setTimeout(()=>{
+                    deadDisplayContainer.style.display = 'flex';
+                },1000)
+
             }
         }
     }
 
     /*------------------ ITEM ---------------------------*/
-    for ( let item of itemList) {
+    for (let item of Obstacles['itemList']) {
         item.update();
         item.draw();
 
 
-        if (isColliding(item,character)) {
+        if (isColliding(item, character)) {
             item.reset();
+            console.log(level);
+            if (item.name === 'goldCoin') {
 
+                /*------------------ NEXT LEVEL --------------------*/
+                if (updateScore()){// CHECK IF LEVEL IS CHANGED THEN CHANGE ENEMY ACCORDING TO LEVEL
+                    character.reset();// Move character to origin position
+                    Obstacles['enemyList'] = []; // Temporarily clear all enemies
+                    setTimeout(()=>{
+                        Obstacles['enemyList'] = generateEnemy(level);2000
+                    },2000) // Wait 2 seconds after create new enemies
+
+                }
+            }
         }
     }
 
 
     /*------------------ SLOW DOWN ANIMATION ---------------------------*/
-    if (gameFrame % FrameStats.staggerFrames=== 0){
+    if (gameFrame % FrameStats.staggerFrames === 0) {
 
-        if (frameX < FrameStats.maxFrames ) {
+        if (frameX < FrameStats.maxFrames) {
             frameX++;
         } else {
-            if (character.state !== 'Dead'){
+            if (character.state !== 'Dead') {
                 frameX = 0;
             }
         }
@@ -110,19 +162,20 @@ function animate(character,enemyList,itemList,FrameStats) {
 
     gameFrame++;// MOVE TO NEXT FRAME
 
-    requestAnimationFrame(()=>{animate(character,enemyList,itemList,FrameStats)});
+    requestAnimationFrame(() => {
+        animate(character, Obstacles, FrameStats)
+    });
 }
 
 
-
-
+let Obstacles = {}
 /*---------------- ENEMY INITIALIZATION --------------------*/
 
 
-let enemyList = generateEnemy();
+Obstacles['enemyList'] = generateEnemy(1);
 /*---------------- ITEM INITIALIZATION --------------------*/
 
-let itemList = generateItem();
+Obstacles['itemList'] = generateItem();
 /*---------------- PLAYER INITIALIZATION --------------------*/
 const gangsterImg = new Image();
 gangsterImg.src = 'resources/Idle.png';
@@ -131,25 +184,14 @@ const PLAYER = new Character('resources/Idle.png');
 // PLAYER.characterImg.src = 'resources/Run.png';
 
 
-animate(PLAYER,enemyList,itemList,PLAYER.FrameStats)
-
-
-
-
-
-
-
-
-
-
-
+animate(PLAYER, Obstacles, PLAYER.FrameStats)
 
 
 /*---------------- EVENT HANDLING --------------------*/
 let bodyElement = document.getElementsByTagName("body")[0];
 bodyElement.addEventListener("keydown", (event) => {
 
-    if ( PLAYER.state !== 'Dead') {
+    if (PLAYER.state !== 'Dead') {
         switch (event.key) {
             case 'z':
                 PLAYER.state = 'Run';
@@ -168,7 +210,7 @@ bodyElement.addEventListener("keydown", (event) => {
                     if (PLAYER.state !== 'Jump') {
                         PLAYER.state = 'Jump';
                         PLAYER.setAnimation();
-                        PLAYER.jump(event);
+                        PLAYER.jump();
                     }
                 }
                 break;
@@ -181,14 +223,12 @@ bodyElement.addEventListener("keydown", (event) => {
 
 
 bodyElement.addEventListener("keyup", (event) => {
-    if (PLAYER.state !== 'Dead'){
-        if ((event.key === 'z'||event.key === 'c')){
-
+    if (PLAYER.state !== 'Dead') {
+        if ((event.key === 'z' || event.key === 'c')) {
             PLAYER.stopRunning();
-
         }
 
-        if (PLAYER.state !== 'Jump' ){
+        if (PLAYER.state !== 'Jump') {
             PLAYER.state = 'Idle';
             PLAYER.setAnimation();
         }

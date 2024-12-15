@@ -31,6 +31,13 @@ export class Character {
         this.isRunning = false;
 
     }
+    /* ------------------------------ RESET ------------------------------*/
+    reset(){
+        this.x = OFFSET_X;
+        this.y = OFFSET_Y;
+    }
+
+
     /* ------------------------------ HORIZONTAL MOVEMENT ------------------------------*/
     // Function to move the character
     run(units) {
@@ -76,7 +83,7 @@ export class Character {
         this.y -= units;
     }
 
-    jump(event){
+    jump(){
         if (this.onAirCheck()===false){
             const interval = setInterval(() => {
                 if (this.y > this.maxJumpHeight) {

@@ -3,22 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-  <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/styleStartScreen.css">
 </head>
 <body>
 
+<ul style="list-style-type:none">
+    <li id="game-header" >GANGSTER RUSH</li>
+   <li>
+       <button id= 'start-button' onclick="window.location.href='PLAY_GAME.html';">START</button>
+   </li>
 
-<canvas id="background"  width="1500px" height="680px" ></canvas>
-<canvas id="gangsterCanvas"></canvas>
+  <li>
+      <button id="setting-button" onclick="window.location.href='PLAY_GAME.html';">SETTING</button>
+  </li>
 
-<div id="health-bar-container">
-    <div id="health-bar"></div>
-</div>
+</ul>
 
-
-<div id="score">1</div>
-
-<script src="animation.js" type = 'module'></script>
-<!--<script src="animation.js"></script>-->
 </body>
 </html>

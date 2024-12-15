@@ -1,0 +1,155 @@
+html, body {
+    overflow-x: hidden;
+}
+
+#score-board {
+
+    position: absolute;
+    top: 10px;
+    left: 1400px;
+    width:100px;
+    height: 100px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 3rem; /* Large text size */
+
+    font-family: 'Press Start 2P', cursive;
+    font-weight: bold;
+    background-color: #6199fb; /* Dark background for contrast */
+    color: #fff; /* White text */
+    border: 2px solid #6199fb;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+#health-bar-container {
+    width: 300px;
+    height: 30px;
+    background-color: #ccc;
+    border: 2px solid #000;
+    border-radius: 15px;
+    overflow: hidden;
+    position: absolute;
+    top: 10px;
+    left: 20px;
+}
+
+#health-bar {
+    width: 100%;
+    height: 100%;
+    background-color: #4caf50;
+    transition: width 0.3s ease;
+}
+
+
+#background{
+    background-image: url("../resources/gif/background.png");
+    background-size: cover;
+    border: 5px solid #000;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 10px;
+    right: 10px;
+}
+
+#level-display{
+    position: absolute;
+    top: 10px;
+    left: 600px;
+    width:300px;
+    height: 70px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 3rem; /* Large text size */
+    color: white;
+
+
+    font-family: 'Press Start 2P', cursive;
+    font-weight: bold;
+}
+
+
+
+
+
+/*------------------------------------- DEAD SCREEN -----------------------------------*/
+#dead-display-container{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width:1560px;
+    height: 700px;
+
+    background-color: black;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    font-size: 10rem;
+    color: darkred;
+
+    animation-name: dead-display-slide-down ;
+    animation-duration: 1.5s;
+
+
+}
+
+#restart-button,#main-menu-button{
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+    /*border: 3px solid darkslateblue;*/
+
+    font-family: 'Press Start 2P', cursive;
+    font-weight: bold;
+    color: white;
+    border-radius: 15px;
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.6);
+    background-color: darkred;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+#restart-button {
+    position: absolute;
+    top: 500px;
+    left: 450px;
+    width:200px;
+    height: 50px;
+}
+
+#main-menu-button {
+    position: absolute;
+    top: 500px;
+    left: 700px;
+    width:450px;
+    height: 50px;
+
+}
+
+#restart-button:hover,#main-menu-button:hover  {
+    background-color: #00aa00; /* Lighter green on hover */
+    border-color: #007700; /* Slight border change */
+    transform: scale(1.1); /* Slight zoom effect */
+}
+
+#restart-button:active,#main-menu-button:active {
+    background-color: #005500; /* Darker green when pressed */
+    transform: scale(0.95); /* Slight shrink effect */
+}
+
+
+
+@keyframes dead-display-slide-down {
+    from {
+        top: -700px;
+        left: 0;}
+    to {
+        top: 0;
+        left: 0;}
+}
