@@ -9,24 +9,62 @@ export class Enemy  extends Obstacle {
 
         this.x_reset = x;
         this.y_reset = y;
+        this.angle_reset = angle;
         this.movementStyle = movementStyle;
+
 
         this.sin_fluctuate = 5; // The fluctuate range when enemy moves in sin wave
 
         // HORIZONTAL HOVERING
-        this.hover_horizontal_range = 500; // Change the hovering distance
+        this.hover_horizontal_range_OFFSET = 500;
+        this.hover_horizontal_range = this.hover_horizontal_range_OFFSET; // Change the hovering distance and direction when start moving (>0:right,<0:left)
         this.angle_horizontal_speed = 0.7*Math.PI/180; // Change the hovering speed
         this.hover_horizontal_Xoffset = x; // Change the starting point for hovering
-
+        this.start_hover_direction = 'right';
         // VERTICAL HOVERING
         this.hover_vertical_range = 500; // Change the hovering distance
         this.angle_vertical_speed = 5*Math.PI/180;
         this.hover_vertical_Yoffset = y;
     }
 
-    reset(){
+    reset(char_x,char_y){
+        /*
+        char_x, char_y is the position of character
+        */
         this.x = this.x_reset;
         this.y = this.y_reset;
+
+        if (this.movementStyle==='hover-horizontal'){
+            // b= this.hover_horizontal_range*Math.sin(this.angle_reset) + this.hover_horizontal_Xoffset; right
+            // a = -this.hover_horizontal_range*Math.sin(this.angle_reset) + this.hover_horizontal_Xoffset; left
+            // a<b
+            if (char_x > this.hover_horizontal_Xoffset ){
+                // this.hover_horizontal_Xoffset  = Infinity;
+                this.angle = this.angle_reset;
+                this.hover_horizontal_range = -this.hover_horizontal_range_OFFSET; // Change the respawn direction to left direction
+                //  The enemy appears to bounce off our character
+                // this.hover_horizontal_range = 0;
+                // this.hover_horizontal_Xoffset = 100;
+            } else {
+                this.angle = this.angle_reset;
+                this.hover_horizontal_range = this.hover_horizontal_range_OFFSET; // Change the respawn direction to right direction
+
+            }
+        }
+
+    }
+
+
+    resetDelayed(){
+        // move enemy hitbox outside game canvas
+        // this.x= -1000;
+        // this.y = -1000;
+        // reset to original position after 1s
+        // setTimeout(()=>{
+        //     this.x = this.x_reset;
+        //     this.y = this.y_reset;
+        // },5000)
+
     }
 
     update() {
@@ -50,11 +88,13 @@ export class Enemy  extends Obstacle {
             case 'hover-horizontal':
                 this.x = this.hover_horizontal_range*Math.sin(this.angle) + this.hover_horizontal_Xoffset;
                 this.angle += this.angle_horizontal_speed;
+
                 break;
 
             case 'hover-vertical':
                 this.y = this.hover_vertical_range*Math.sin(this.angle) + this.hover_vertical_Yoffset;
                 this.angle += this.angle_vertical_speed;
+
                 break;
         }
 
@@ -64,6 +104,8 @@ export class Enemy  extends Obstacle {
         if (gameFrame % 4=== 0){
             this.frame > 4 ? this.frame = 0 : this.frame++ ;
         }
+
+        // setTimeout(()=>{},1000);
     }
 
     // draw(){
@@ -91,7 +133,7 @@ export function generateEnemy(level) {
 
             addSingleEnemy(enemyList, 'resources/enemy/enemy1.png',
                 500, 400, 100, 80,
-                293, 155, Math.random() * 2 + 4, 50, 'hover-horizontal',);
+                293, 155, 0, 90, 'hover-horizontal',);
             // ADD ENEMY1 1 times
             // for (let i = 1; i <= 1; i++) {
             //     enemyList = addSingleEnemy(enemyList, 'resources/enemy/enemy1.png',
@@ -104,7 +146,7 @@ export function generateEnemy(level) {
 
             addSingleEnemy(enemyList, 'resources/enemy/enemy1.png',
                 500, 400, 100, 80,
-                293, 155, Math.random() * 2 + 4, 50, 'hover-horizontal',);
+                293, 155, Math.random() * 2 + 4, 90, 'hover-horizontal',);
             addSingleEnemy(enemyList, 'resources/enemy/enemy1.png',
                 500, 0, 100, 80,
                 293, 155, Math.random() * 2 + 3, Math.random() * 70, 'vertical');

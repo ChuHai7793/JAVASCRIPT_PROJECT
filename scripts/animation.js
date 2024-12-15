@@ -18,7 +18,7 @@ export let frameY = 0;
 export let gameFrame = 0;
 
 const deadDisplayContainer = document.getElementById('dead-display-container');
-
+const nextLevelTransition = document.getElementById('next-level-transition');
 
 let score = 0;
 let level = 1;
@@ -58,8 +58,6 @@ function updateScore() {
 }
 
 
-
-
 function updateHealth(value) {
 
     health = Math.max(0, Math.min(100, health + value));
@@ -86,7 +84,7 @@ function isColliding(obj1, obj2) {
 }
 
 
-
+let enemyCollideFlag = false;
 function animate(character, Obstacles, FrameStats) {
 
     ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
@@ -98,7 +96,10 @@ function animate(character, Obstacles, FrameStats) {
     /*------------------ ENEMY ---------------------------*/
 
     for (let enemy of Obstacles['enemyList']) {
-
+        // if(enemyCollideFlag === true){
+        //     enemy.reset();
+        // }
+        // enemyCollideFlag =  false;
         enemy.update();
         enemy.draw();
         if (enemy.y > CANVAS_HEIGHT - enemy.height || enemy.y < 0 ||
@@ -107,7 +108,9 @@ function animate(character, Obstacles, FrameStats) {
         }
 
         if (isColliding(enemy, character)) {
-            enemy.reset();
+            // console.log(enemy.x,enemy.y)
+            enemy.reset(character.x);
+            // console.log(enemy.x,enemy.y)
             updateHealth(-10);
 
             if (health <= 0) {
@@ -116,7 +119,6 @@ function animate(character, Obstacles, FrameStats) {
                 setTimeout(()=>{
                     deadDisplayContainer.style.display = 'flex';
                 },1000)
-
             }
         }
     }
@@ -136,9 +138,13 @@ function animate(character, Obstacles, FrameStats) {
                 if (updateScore()){// CHECK IF LEVEL IS CHANGED THEN CHANGE ENEMY ACCORDING TO LEVEL
                     character.reset();// Move character to origin position
                     Obstacles['enemyList'] = []; // Temporarily clear all enemies
+                    nextLevelTransition.style.display = 'flex';
+                    nextLevelTransition.classList.add('next-level-transition');
+
                     setTimeout(()=>{
-                        Obstacles['enemyList'] = generateEnemy(level);2000
-                    },2000) // Wait 2 seconds after create new enemies
+                        Obstacles['enemyList'] = generateEnemy(level);
+                        nextLevelTransition.classList.remove('next-level-transition');
+                    },3000) // Wait 3 seconds after create new enemies
 
                 }
             }
@@ -155,9 +161,9 @@ function animate(character, Obstacles, FrameStats) {
             if (character.state !== 'Dead') {
                 frameX = 0;
             }
-        }
-        gameFrame = 0;
+        }        gameFrame = 0;
     }
+
 
 
     gameFrame++;// MOVE TO NEXT FRAME
@@ -178,9 +184,7 @@ Obstacles['enemyList'] = generateEnemy(1);
 Obstacles['itemList'] = generateItem();
 /*---------------- PLAYER INITIALIZATION --------------------*/
 const gangsterImg = new Image();
-gangsterImg.src = 'resources/Idle.png';
-
-const PLAYER = new Character('resources/Idle.png');
+const PLAYER = new Character('resources/Characters/char'+localStorage.getItem("character_index") +  '/Idle.png');
 // PLAYER.characterImg.src = 'resources/Run.png';
 
 

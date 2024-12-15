@@ -158,12 +158,8 @@ export class Character {
     }
 
     setAnimation() {
-        if (this.state === 'start'){
-            this.characterImg.src = 'resources/Idle.png';
 
-        } else {
-            this.characterImg.src = 'resources/' + this.state + '.png';
-        }
+        this.characterImg.src = 'resources/Characters/char'+localStorage.getItem("character_index") + '/'+this.state + '.png';
 
         switch (this.state) {
             case 'Run':

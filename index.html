@@ -7,8 +7,8 @@
 </head>
 <body>
 
-<ul style="list-style-type:none">
-    <li id="game-header" >GANGSTER RUSH</li>
+<ul style="list-style-type:none" id="main-menu">
+    <li id="game-header" >GANGSTER HUSTLE</li>
    <li>
        <button id= 'start-button' onclick="window.location.href='PLAY_GAME.html';">START</button>
    </li>
@@ -17,7 +17,17 @@
       <button id="setting-button" onclick="window.location.href='PLAY_GAME.html';">SETTING</button>
   </li>
 
+    <li>
+        <button id="select-char-button" onclick="changeCharacter();">
+            SELECT CHARACTER
+        </button>
+    </li>
+    <li>
+        <canvas id="character-panel"></canvas>
+    </li>
+
 </ul>
+<script src='./scripts/animation_Character_Select.js'> </script>
 
 </body>
 </html>

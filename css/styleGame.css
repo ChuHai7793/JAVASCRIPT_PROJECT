@@ -45,7 +45,7 @@ html, body {
 
 
 #background{
-    background-image: url("../resources/gif/background.png");
+    background-image: url("../resources/backgrounds/bg1.png");
     background-size: cover;
     border: 5px solid #000;
     position: absolute;
@@ -53,6 +53,7 @@ html, body {
     bottom: 0;
     left: 10px;
     right: 10px;
+
 }
 
 #level-display{
@@ -77,13 +78,20 @@ html, body {
 
 
 
-/*------------------------------------- DEAD SCREEN -----------------------------------*/
-#dead-display-container{
+/*------------------------------------- DEAD SCREEN - NEXT LEVEL TRANSITION -----------------------------------*/
+#dead-display-container,.next-level-transition{
     position: absolute;
     top: 0;
     left: 0;
     width:1560px;
     height: 700px;
+
+
+}
+
+#dead-display-container{
+    animation-name: dead-display-slide-down ;
+    animation-duration: 1.5s;
 
     background-color: black;
     display: none;
@@ -91,13 +99,24 @@ html, body {
     align-items: center;
     font-size: 10rem;
     color: darkred;
-
-    animation-name: dead-display-slide-down ;
-    animation-duration: 1.5s;
-
-
 }
 
+.next-level-transition{
+    display: none;
+    top: -700px;
+    height: 700px;
+    width: 1560px;
+
+    background-color: black;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 10rem;
+    color: white;
+
+    animation-name: next-level-slide-down ;
+    animation-duration: 4s;
+}
 #restart-button,#main-menu-button{
 
     display: flex;
@@ -152,4 +171,20 @@ html, body {
     to {
         top: 0;
         left: 0;}
+}
+@keyframes next-level-slide-down {
+    0% {
+        top: -700px;
+        left: 0;
+    } 50% {
+        top: 0;
+        left: 0;
+        /*transform: translateY(700px);*/
+    } 100% {
+        display: none;
+        top: -900px;
+        left: 0;
+        animation-name:none;
+        /*transform: translateY(-700px);*/
+    }
 }
