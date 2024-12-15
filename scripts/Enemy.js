@@ -31,10 +31,34 @@ export class Enemy  extends Obstacle {
         /*
         char_x, char_y is the position of character
         */
-        this.x = this.x_reset;
-        this.y = this.y_reset;
 
-        if (this.movementStyle==='hover-horizontal'){
+
+        /*----------------- HORIZONTAL CASE -----------------------*/
+        if (this.movementStyle==='horizontal'){
+            // speed/Math.abs(speed) shows the direction. > 0: left to right, < 0: right to left
+            // NORMALLY, THE ENEMY WILL REAPPEAR FROM THE LEFT OR RIGHT
+            if ((this.speed/Math.abs(this.speed))>0){
+                this.x = this.x_reset;
+            } else {
+                this.x = CANVAS_WIDTH - this.width;
+            }
+
+            // IF THE CHARACTER TOO CLOSE TO THE LEFT when enemy move from left to right
+            // => MAKE IT APPEAR FROM THE RIGHT
+            if (char_x < 400 && (this.speed/Math.abs(this.speed))>0) {
+                // console.log(CANVAS_WIDTH);
+                this.x = CANVAS_WIDTH - this.width;
+                this.speed *= -1;
+                // console.log('dsssf')
+            }
+            // IF THE CHARACTER TOO CLOSE TO THE LEFT  when enemy move from right to left
+            if ((CANVAS_WIDTH - char_x) < 400 && (this.speed/Math.abs(this.speed))<0) {
+                this.x = 0;
+                this.speed = -this.speed;
+                // console.log('dsf')
+            }
+        /*----------------- HOVER HORIZONTAL CASE -----------------------*/
+        }else if (this.movementStyle==='hover-horizontal'){
             // b= this.hover_horizontal_range*Math.sin(this.angle_reset) + this.hover_horizontal_Xoffset; right
             // a = -this.hover_horizontal_range*Math.sin(this.angle_reset) + this.hover_horizontal_Xoffset; left
             // a<b
@@ -42,14 +66,13 @@ export class Enemy  extends Obstacle {
                 // this.hover_horizontal_Xoffset  = Infinity;
                 this.angle = this.angle_reset;
                 this.hover_horizontal_range = -this.hover_horizontal_range_OFFSET; // Change the respawn direction to left direction
-                //  The enemy appears to bounce off our character
-                // this.hover_horizontal_range = 0;
-                // this.hover_horizontal_Xoffset = 100;
             } else {
                 this.angle = this.angle_reset;
                 this.hover_horizontal_range = this.hover_horizontal_range_OFFSET; // Change the respawn direction to right direction
-
             }
+        } else {
+            this.x = this.x_reset;
+            this.y = this.y_reset;
         }
 
     }

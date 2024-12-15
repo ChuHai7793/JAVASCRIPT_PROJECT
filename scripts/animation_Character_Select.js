@@ -30,9 +30,9 @@ function animate(img,FrameStats) {
 
 let char1_ImgSrc = 'resources/Characters/char0/Idle.png'
 let char2_ImgSrc = 'resources/Characters/char1/Idle.png'
-// let char3_ImgSrc = 'resources/Characters/char2/Idle.png'
+let char3_ImgSrc = 'resources/Characters/char2/Idle.png'
 
-let characters_ImgSrc_List = [char1_ImgSrc,char2_ImgSrc]
+let characters_ImgSrc_List = [char1_ImgSrc,char2_ImgSrc,char3_ImgSrc]
 let character_index = 0;
 function changeCharacter(){
     if (character_index<characters_ImgSrc_List.length-1){
@@ -41,7 +41,7 @@ function changeCharacter(){
         character_index = 0;
     }
     gangsterImg.src = characters_ImgSrc_List[character_index];
-    // console.log(character_index);
+    console.log(character_index);
     localStorage.setItem('character_index', character_index);
 }
 
