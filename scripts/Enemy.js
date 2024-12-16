@@ -19,7 +19,7 @@ export class Enemy  extends Obstacle {
         // HORIZONTAL HOVERING
         this.hover_horizontal_range_OFFSET = 500;
         this.hover_horizontal_range = this.hover_horizontal_range_OFFSET; // Change the hovering distance and direction when start moving (>0:right,<0:left)
-        this.angle_horizontal_speed = angle_horizontal_speed&&0.7*Math.PI/180 // Change the hovering speed
+        this.angle_horizontal_speed = angle_horizontal_speed||0.7*Math.PI/180 // Change the hovering speed
         this.hover_horizontal_Xoffset = x; // Change the starting point for hovering
 
         // VERTICAL HOVERING

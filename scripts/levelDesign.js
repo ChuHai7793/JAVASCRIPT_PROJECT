@@ -55,14 +55,15 @@ function level1(enemyList){
 function level2(enemyList){
     return  addSingleEnemy(enemyList, 'resources/enemy/enemy3.png',
         500, 300, 100, 80,
-        218, 177, 10, 90,NaN,0.2*Math.PI/180,'hover-vertical');
+        218, 177, NaN, 90,NaN,0.5*Math.PI/180,'hover-vertical');
 }
 
 
 function level3(enemyList){
     return  addSingleEnemy(enemyList, 'resources/enemy/enemy4.png',
-        500, 500, 100, 80,
-        213, 212, NaN, 90, 'hover-horizontal',);
+        500, 600, 100, 80,
+        213, 212, NaN,
+        90, 0.4*Math.PI/180,NaN,'hover-horizontal',);
 }
 
 
