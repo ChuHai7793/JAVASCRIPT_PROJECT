@@ -9,13 +9,30 @@ export class Item extends Obstacle {
     }
 
     reset(char_x) {
-        this.x = Math.floor(Math.random() * (CANVAS_WIDTH-200));
-        this.y = 400;
+        // this.x = Math.floor(Math.random() * (CANVAS_WIDTH-100));
+
+        // Coin will appear randomly on the other half of the canvas opposite to character x position
+        // if character x position belong to the left half of canvas
+        if (char_x <= CANVAS_WIDTH / 2) {
+            this.x = Math.floor(Math.random() * (CANVAS_WIDTH / 2 - 100)) + CANVAS_WIDTH / 2;
+        // if character x position belong to the right half of canvas
+        } else {
+            this.x = Math.floor(Math.random() * (CANVAS_WIDTH / 2 - 300));
+        }
+
+        if (this.name === 'goldCoin') {
+            this.y = 400;
+        } else if (this.name === 'bronzeCoin') {
+            this.y = 0;
+        }
     }
 
     update() {
         super.update();
 
+        if (this.name === 'bronzeCoin') {
+            this.y += 2;
+        }
         // SLOW DOWN ANIMATION
         if (gameFrame % 5=== 0){
             this.frame > 8 ? this.frame = 0 : this.frame++ ;
@@ -23,16 +40,3 @@ export class Item extends Obstacle {
     }
 }
 
-export function generateItem(){
-    let itemList = []
-
-    const Item1_Img = new Image();
-    Item1_Img.src = 'resources/item/GoldCoin_1.png';
-    const ITEM1_NUMBER = 1;
-    for (let i=1; i<= ITEM1_NUMBER;i++){
-        itemList.push(new Item(Item1_Img,200,400,100,80,
-            563,564,NaN,NaN,'goldCoin'));
-    }
-
-    return itemList
-}

@@ -1,5 +1,8 @@
 import {Enemy} from "./Enemy.js";
+import {Item} from "./Item.js";
 
+
+/*---------------------------------- ENEMY --------------------------------------*/
 export function addSingleEnemy(enemyList, ImgSrc,
                         x, y, width, height,
                         spriteWidth, spriteHeight, speed, angle,
@@ -11,40 +14,37 @@ export function addSingleEnemy(enemyList, ImgSrc,
 }
 
 export function generateEnemy(level) {
-
     let enemyList = []
-    switch (level) {
-
-        case 1:
-            enemyList = [];
-            enemyList = level1(enemyList);
-            break;
-
-        case 2:
-            enemyList = [];
-            enemyList = level2(enemyList);
-            break;
-
-        case 3:
-            enemyList = [];
-            enemyList = level3(enemyList);
-            break;
-
-        case 4:
-            enemyList = []
-            addSingleEnemy(enemyList, 'resources/enemy/enemy1.png',
-                0, 100, 100, 80,
-                293, 155, Math.random() * 4 + 2, Math.random()*70, 'diagonal')
-            addSingleEnemy(enemyList, 'resources/enemy/enemy1.png',
-                1000, 200, 100, 80,
-                293, 155, Math.random() * 4 + 2, 90+ Math.random()*70, 'diagonal')
-            break;
-    }
-
+        enemyList = eval(`${'level'+level}(enemyList)`);
     return enemyList
 }
+/*---------------------------------- ITEM --------------------------------------*/
+export function addSingleItem(itemList, ImgSrc,
+                              x, y, width, height,
+                              spriteWidth, spriteHeight, name) {
+    const Item_Img = new Image();
+    Item_Img.src = ImgSrc;
+    itemList.push(new Item(Item_Img,x, y, width, height,
+        spriteWidth, spriteHeight,NaN,NaN,name));
+    return itemList
+}
 
-/*------------------------- LEVEL DESIGN ---------------------------------*/
+export function generateItem(){
+    let itemList = []
+
+    itemList = addSingleItem(itemList,'resources/item/GoldCoin_1.png',
+        200,400,100,80,
+        563,564,'goldCoin')
+
+    // addSingleItem(itemList,'resources/item/BronzeCoin_1.png',
+    //     200,0,100,80,
+    //     563,564,'bronzeCoin')
+
+    return itemList
+}
+
+
+/*------------------------- LEVEL DESIGN ENEMY ---------------------------------*/
 function level1(enemyList){
     return  addSingleEnemy(enemyList, 'resources/enemy/enemy1.png',
         0, 400, 100, 80,

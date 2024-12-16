@@ -1,8 +1,5 @@
 import {Character} from './Character.js'
-import {generateEnemy} from './levelDesign.js'
-import {generateItem} from './Item.js'
-
-
+import {generateEnemy, generateItem} from './levelDesign.js'
 
 
 export const GAME_CANVAS = document.getElementById('background');
@@ -22,37 +19,22 @@ const nextLevelTransition = document.getElementById('next-level-transition');
 
 let score = 0;
 let level = 1;
-let health = 100;
+let health = 10;
 
 
 function updateScore() {
     // IF NEXT LEVEL RETURN TRUE, ELSE FALSE
     const scoreBoard = document.getElementById('score-board');
     const levelDisplay = document.getElementById('level-display');
+    // const scoreList = [1,2,3,4,5];
+    const scoreList = [5,10,15,20,25];
     score += 1;
     scoreBoard.innerText = score;
-
     // SET LEVEL
-    switch (score){
-        case 5:
-            level++;
-            levelDisplay.innerText = 'LEVEL ' + level;
-            return true
-
-        case 10:
-            level++;
-            levelDisplay.innerText = 'LEVEL ' + level;
-            return true
-
-        case 15:
-            level++;
-            levelDisplay.innerText = 'LEVEL ' + level;
-            return true
-
-        case 20:
-            level++;
-            levelDisplay.innerText = 'LEVEL ' + level;
-            return true
+    if (scoreList.includes(score) ){
+        level++;
+        levelDisplay.innerText = 'LEVEL ' + level;
+        return true;
     }
     return false;
 }
@@ -89,28 +71,24 @@ function animate(character, Obstacles, FrameStats) {
 
     ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
 
-
     /*------------------ CHARACTER ---------------------------*/
     character.draw(character.characterImg);
 
     /*------------------ ENEMY ---------------------------*/
 
     for (let enemy of Obstacles['enemyList']) {
-        // if(enemyCollideFlag === true){
-        //     enemy.reset();
-        // }
-        // enemyCollideFlag =  false;
+
         enemy.update();
         enemy.draw();
+
         if (enemy.y > CANVAS_HEIGHT - enemy.height || enemy.y < 0 ||
             enemy.x > CANVAS_WIDTH - enemy.width || enemy.x < 0 ) {
             enemy.reset(character.x);
         }
 
         if (isColliding(enemy, character)) {
-            // console.log(enemy.x,enemy.y)
             enemy.reset(character.x);
-            // console.log(enemy.x,enemy.y)
+
             updateHealth(-10);
 
             if (health <= 0) {
@@ -128,12 +106,10 @@ function animate(character, Obstacles, FrameStats) {
         item.update();
         item.draw();
 
-
         if (isColliding(item, character)) {
-            item.reset(character.x);
-            console.log(level);
-            if (item.name === 'goldCoin') {
 
+            if (item.name === 'goldCoin') {
+                item.reset(character.x);
                 /*------------------ NEXT LEVEL --------------------*/
                 if (updateScore()){// CHECK IF LEVEL IS CHANGED THEN CHANGE ENEMY ACCORDING TO LEVEL
                     character.reset(character.x);// Move character to origin position
@@ -157,14 +133,13 @@ function animate(character, Obstacles, FrameStats) {
 
         if (frameX < FrameStats.maxFrames) {
             frameX++;
+
         } else {
             if (character.state !== 'Dead') {
                 frameX = 0;
             }
         }        gameFrame = 0;
     }
-
-
 
     gameFrame++;// MOVE TO NEXT FRAME
 
@@ -189,7 +164,6 @@ const PLAYER = new Character('resources/Characters/char'+localStorage.getItem("c
 
 
 animate(PLAYER, Obstacles, PLAYER.FrameStats)
-
 
 /*---------------- EVENT HANDLING --------------------*/
 let bodyElement = document.getElementsByTagName("body")[0];
