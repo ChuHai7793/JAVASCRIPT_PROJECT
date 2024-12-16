@@ -1,5 +1,5 @@
 import {Character} from './Character.js'
-import {generateEnemy} from './Enemy.js'
+import {generateEnemy} from './levelDesign.js'
 import {generateItem} from './Item.js'
 
 
@@ -104,7 +104,7 @@ function animate(character, Obstacles, FrameStats) {
         enemy.draw();
         if (enemy.y > CANVAS_HEIGHT - enemy.height || enemy.y < 0 ||
             enemy.x > CANVAS_WIDTH - enemy.width || enemy.x < 0 ) {
-            enemy.reset();
+            enemy.reset(character.x);
         }
 
         if (isColliding(enemy, character)) {
@@ -130,13 +130,13 @@ function animate(character, Obstacles, FrameStats) {
 
 
         if (isColliding(item, character)) {
-            item.reset();
+            item.reset(character.x);
             console.log(level);
             if (item.name === 'goldCoin') {
 
                 /*------------------ NEXT LEVEL --------------------*/
                 if (updateScore()){// CHECK IF LEVEL IS CHANGED THEN CHANGE ENEMY ACCORDING TO LEVEL
-                    character.reset();// Move character to origin position
+                    character.reset(character.x);// Move character to origin position
                     Obstacles['enemyList'] = []; // Temporarily clear all enemies
                     nextLevelTransition.style.display = 'flex';
                     nextLevelTransition.classList.add('next-level-transition');

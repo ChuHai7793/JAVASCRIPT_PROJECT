@@ -8,21 +8,19 @@ export class Item extends Obstacle {
         this.name = name;
     }
 
-    reset() {
-        this.x = Math.floor(Math.random() * (CANVAS_WIDTH-400));
+    reset(char_x) {
+        this.x = char_x + Math.floor(Math.random() * (CANVAS_WIDTH-400));
         this.y = 400;
     }
 
     update() {
         super.update();
+
         // SLOW DOWN ANIMATION
         if (gameFrame % 5=== 0){
             this.frame > 8 ? this.frame = 0 : this.frame++ ;
         }
-
-
     }
-    
 }
 
 export function generateItem(){
@@ -33,7 +31,7 @@ export function generateItem(){
     const ITEM1_NUMBER = 1;
     for (let i=1; i<= ITEM1_NUMBER;i++){
         itemList.push(new Item(Item1_Img,200,400,100,80,
-            563,564,Math.random()*4+3,Math.random()*90,'goldCoin'));
+            563,564,NaN,NaN,'goldCoin'));
     }
 
     return itemList
