@@ -1,6 +1,6 @@
 /*---------------- MAIN INITIALIZATION --------------------*/
 import {ctx,CANVAS_WIDTH,CANVAS_HEIGHT} from './animation.js'
-import {frameX,frameY,gameFrame} from './animation.js'
+import {frameX,frameY} from './animation.js'
 import {OFFSET_X,OFFSET_Y} from './animation.js'
 
 
@@ -13,7 +13,6 @@ export class Character {
         this.spriteHeight = 128;
         this.width = 128*2;
         this.height = 128*2;
-        this.speed = 5;
         this.FrameStats = {
             maxFrames: 5,
             staggerFrames: 8

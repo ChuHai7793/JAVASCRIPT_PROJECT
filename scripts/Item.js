@@ -9,7 +9,7 @@ export class Item extends Obstacle {
     }
 
     reset(char_x) {
-        this.x = char_x + Math.floor(Math.random() * (CANVAS_WIDTH-400));
+        this.x = Math.floor(Math.random() * (CANVAS_WIDTH-200));
         this.y = 400;
     }
 

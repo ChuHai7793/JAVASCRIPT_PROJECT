@@ -34,22 +34,22 @@ function updateScore() {
 
     // SET LEVEL
     switch (score){
-        case 1:
+        case 5:
             level++;
             levelDisplay.innerText = 'LEVEL ' + level;
             return true
 
-        case 2:
+        case 10:
             level++;
             levelDisplay.innerText = 'LEVEL ' + level;
             return true
 
-        case 3:
+        case 15:
             level++;
             levelDisplay.innerText = 'LEVEL ' + level;
             return true
 
-        case 4:
+        case 20:
             level++;
             levelDisplay.innerText = 'LEVEL ' + level;
             return true
@@ -84,7 +84,7 @@ function isColliding(obj1, obj2) {
 }
 
 
-let enemyCollideFlag = false;
+
 function animate(character, Obstacles, FrameStats) {
 
     ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
@@ -183,7 +183,7 @@ Obstacles['enemyList'] = generateEnemy(1);
 
 Obstacles['itemList'] = generateItem();
 /*---------------- PLAYER INITIALIZATION --------------------*/
-const gangsterImg = new Image();
+// const gangsterImg = new Image();
 const PLAYER = new Character('resources/Characters/char'+localStorage.getItem("character_index") +  '/Idle.png');
 // PLAYER.characterImg.src = 'resources/Run.png';
 

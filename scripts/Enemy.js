@@ -1,8 +1,7 @@
 /*---------------- MAIN INITIALIZATION --------------------*/
 import {gameFrame,CANVAS_WIDTH} from './animation.js'
 import {Obstacle} from "./Obstacle.js";
-// import * as level from './levelDesign.js';
-import {addSingleEnemy} from './levelDesign.js';
+
 
 export class Enemy  extends Obstacle {
     constructor(ObstacleImg,x,y,width,height,spriteWidth,spriteHeight,speed,angle,angle_horizontal_speed,angle_vertical_speed,movementStyle,) {
@@ -84,17 +83,6 @@ export class Enemy  extends Obstacle {
     }
 
 
-    resetDelayed(){
-        // move enemy hitbox outside game canvas
-        // this.x= -1000;
-        // this.y = -1000;
-        // reset to original position after 1s
-        // setTimeout(()=>{
-        //     this.x = this.x_reset;
-        //     this.y = this.y_reset;
-        // },5000)
-
-    }
 
     update() {
 
@@ -138,16 +126,16 @@ export class Enemy  extends Obstacle {
 }
 
 
-function addEnemy2(enemyList, enemy_num) {
-    const Enemy_Img = new Image();
-    Enemy_Img.src = 'resources/enemy/enemy2.png';
-
-    for (let i = 1; i <= enemy_num; i++) {
-        enemyList.push(new Enemy(Enemy_Img, 0, 0, 100, 80,
-            266, 188, Math.random() * 4 + 3, Math.random() * 70), 'horizontal');
-    }
-    return enemyList
-}
+// function addEnemy2(enemyList, enemy_num) {
+//     const Enemy_Img = new Image();
+//     Enemy_Img.src = 'resources/enemy/enemy2.png';
+//
+//     for (let i = 1; i <= enemy_num; i++) {
+//         enemyList.push(new Enemy(Enemy_Img, 0, 0, 100, 80,
+//             266, 188, Math.random() * 4 + 3, Math.random() * 70), 'horizontal');
+//     }
+//     return enemyList
+// }
 
 // ADD ENEMY1 1 times
 // for (let i = 1; i <= 1; i++) {
