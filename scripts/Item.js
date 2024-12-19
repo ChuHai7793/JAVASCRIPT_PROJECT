@@ -17,19 +17,20 @@ export class Item extends Obstacle {
             this.x = Math.floor(Math.random() * (CANVAS_WIDTH / 2 - 100)) + CANVAS_WIDTH / 2;
         // if character x position belong to the right half of canvas
         } else {
-            this.x = Math.floor(Math.random() * (CANVAS_WIDTH / 2 - 300));
+            this.x = Math.floor(Math.random() * (CANVAS_WIDTH / 2 - 300)) + 300;
         }
 
         if (this.name === 'goldCoin') {
+
             this.y = 400;
         } else if (this.name === 'bronzeCoin') {
+
             this.y = 0;
         }
     }
 
     update() {
         super.update();
-
         if (this.name === 'bronzeCoin') {
             this.y += 2;
         }

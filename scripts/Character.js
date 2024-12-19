@@ -5,7 +5,7 @@ import {OFFSET_X,OFFSET_Y} from './animation.js'
 
 
 export class Character {
-    constructor(characterResource){
+    constructor(characterResource,char_index){
         this.x = OFFSET_X;
         this.y = OFFSET_Y;
         this.state = 'Start'
@@ -20,14 +20,31 @@ export class Character {
         this.characterImg = new Image();
         this.characterImg.src = characterResource;
         this.direction = "right";
-        this.maxJumpHeight = 200;
+
 
         this.animationId = undefined;
         this.paddingRight = 60;
         this.paddingLeft = 80;
-        this.jumpSpd = 10;
-        this.gravity = 10;
         this.isRunning = false;
+
+        switch (char_index) {
+            case '0':
+                this.maxJumpHeight = 200;
+                this.jumpSpd = 10;
+                this.gravity = 10;
+                break
+            case '1':
+                this.maxJumpHeight = 100;
+                this.jumpSpd = 10;
+                this.gravity = 7;
+
+                break;
+            case '2':
+                this.maxJumpHeight = 250;
+                this.jumpSpd = 10;
+                this.gravity = 15;
+                break;
+        }
 
     }
     /* ------------------------------ RESET ------------------------------*/

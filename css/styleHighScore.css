@@ -1,0 +1,91 @@
+body{
+    background-image: url("../resources/backgrounds/bg2.png");
+    background-size: cover;
+}
+
+/* High Score Board Container */
+.high-score-board,#reset-high-score-button  {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 15px;
+    background: #f7f9fc;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    font-family: 'Press Start 2P', cursive;
+    color: #333;
+
+}
+
+
+/* Title */
+.high-score-board h1,#reset-high-score-button  {
+    text-align: center;
+    font-size: 70px;
+    margin-bottom: 15px;
+    color: #4a90e2;
+    border-bottom: 2px solid #ddd;
+    padding-bottom: 10px;
+}
+
+/* Score List */
+.high-score-board ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+/* Individual Score Item */
+.high-score-board ul li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    margin-bottom: 8px;
+    background: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    transition: transform 0.2s, background-color 0.3s;
+}
+
+/* Hover Effect on Score Items */
+.high-score-board ul li:hover {
+    transform: scale(1.02);
+    background-color: #eef6ff;
+}
+
+/* Player Name */
+.high-score-board ul li .player-name {
+    font-weight: bold;
+    font-size: 25px;
+    flex: 2;
+}
+
+/* Player Score */
+.high-score-board ul li .player-score {
+    font-size: 25px;
+    color: #555;
+    flex: 1;
+    text-align: right;
+}
+
+/* Highlight Top Score */
+.high-score-board ul li:first-child,#reset-high-score-button {
+    background: #4a90e2;
+    color: #fff;
+    font-weight: bold;
+    border: none;
+}
+#reset-high-score-button {
+    width: 700px;
+    border-radius: 20px ;
+    font-size: 35px;
+}
+#reset-high-score-button:hover {
+
+    transform: scale(1.05);
+}
+#reset-high-score-button:active  {
+    /*background-color: #005500; !* Darker green when pressed *!*/
+    transform: scale(0.95); /* Slight shrink effect */
+}

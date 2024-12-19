@@ -10,11 +10,12 @@
 <ul style="list-style-type:none" id="main-menu">
     <li id="game-header" >GANGSTER HUSTLE</li>
    <li>
-       <button id= 'start-button' onclick="window.location.href='PLAY_GAME.html';">START</button>
+<!--       <button id= 'start-button' onclick="window.location.href='PLAY_GAME.html'">START</button>-->
+       <button id= 'start-button' onclick="inputPlayerName()">START</button>
    </li>
 
   <li>
-      <button id="setting-button" onclick="window.location.href='PLAY_GAME.html';">SETTING</button>
+      <button id="setting-button" onclick="window.location.href='HIGH_SCORE.html';">HIGH SCORE</button>
   </li>
 
     <li>
@@ -27,7 +28,32 @@
     </li>
 
 </ul>
-<script src='./scripts/animation_Character_Select.js'> </script>
 
+<!--<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>-->
+<script src="scripts/interfaces/sweetAlert.js"></script>
+<script src='./scripts/animation_Character_Select.js'> </script>
+<script>
+
+     function inputPlayerName() {
+        Swal.fire({
+            title: 'Enter your name',
+            input: 'text', // Type of input
+            inputLabel: 'Your name',
+            inputPlaceholder: 'Type your name here',
+            // showCancelButton: true, // Show a cancel button
+        }).then((result) => {
+            if (result.isConfirmed) {
+                localStorage.setItem('playerName', result.value);
+                // console.log(localStorage.getItem('playerName'));
+                window.location.href = 'PLAY_GAME.html';
+            }
+            // else if (result.isDismissed) {
+            //     Swal.fire('Prompt canceled!');
+            // }
+        });
+    }
+    // Create a prompt
+
+</script>
 </body>
 </html>

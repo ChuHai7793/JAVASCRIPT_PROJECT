@@ -13,7 +13,7 @@ export class Enemy  extends Obstacle {
         this.movementStyle = movementStyle;
 
 
-        this.sin_fluctuate = 5; // The fluctuate range when enemy moves in sin wave
+        this.sin_fluctuate = 10; // The fluctuate range when enemy moves in sin wave
 
         // HORIZONTAL HOVERING
         this.hover_horizontal_range_OFFSET = 500;
@@ -21,11 +21,16 @@ export class Enemy  extends Obstacle {
         this.angle_horizontal_speed = angle_horizontal_speed||0.7*Math.PI/180 // Change the hovering speed
         this.hover_horizontal_Xoffset = x; // Change the starting point for hovering
 
+
         // VERTICAL HOVERING
         this.hover_vertical_range_OFFSET = -300;
         this.hover_vertical_range = this.hover_vertical_range_OFFSET; // Change the hovering distance
         this.angle_vertical_speed = angle_vertical_speed||0.5*Math.PI/180; // Change the hovering speed
         this.hover_vertical_Yoffset = y; // Change the starting point for hovering
+
+        // CIRCLE
+        this.angle_circle_speed = 0.5*Math.PI/180;
+        this.radius = 300;
     }
 
     reset(char_x,char_y) {
@@ -33,9 +38,8 @@ export class Enemy  extends Obstacle {
         char_x, char_y is the position of character
         */
 
-
-        /*----------------- HORIZONTAL CASE -----------------------*/
-        if (this.movementStyle === 'horizontal') {
+        /*----------------- HORIZONTAL CASE AND SIN CASE -----------------------*/
+        if (this.movementStyle === 'horizontal'|| this.movementStyle === 'sin') {
             // speed/Math.abs(speed) shows the direction. > 0: left to right, < 0: right to left
             // NORMALLY, THE ENEMY WILL REAPPEAR FROM THE LEFT OR RIGHT
             if ((this.speed / Math.abs(this.speed)) > 0) {
@@ -46,20 +50,25 @@ export class Enemy  extends Obstacle {
 
             // IF THE CHARACTER TOO CLOSE TO THE LEFT when enemy move from left to right
             // => MAKE IT APPEAR FROM THE RIGHT
-            if (char_x < 400 && (this.speed / Math.abs(this.speed)) > 0) {
+            if (char_x < 800 && (this.speed / Math.abs(this.speed)) > 0) {
                 // console.log(CANVAS_WIDTH);
                 this.x = CANVAS_WIDTH - this.width;
-                this.speed *= -1;
-                // console.log('dsssf')
+                this.speed = -this.speed;
+            } else if (char_x > 800 && (this.speed / Math.abs(this.speed)) < 0) {
+                this.x = CANVAS_WIDTH - this.width;
             }
-            // IF THE CHARACTER TOO CLOSE TO THE LEFT  when enemy move from right to left
-            if ((CANVAS_WIDTH - char_x) < 400 && (this.speed / Math.abs(this.speed)) < 0) {
+            // IF THE CHARACTER TOO CLOSE TO THE RIGHT  when enemy move from right to left
+            if ((CANVAS_WIDTH - char_x) < 800 && (this.speed / Math.abs(this.speed)) < 0) {
                 this.x = 0;
                 this.speed = -this.speed;
-                // console.log('dsf')
+            } else if ((CANVAS_WIDTH - char_x) < 800 && (this.speed / Math.abs(this.speed)) > 0) {
+                this.x =  0;
             }
+
+        } else if (this.movementStyle === 'circle'){
+            this.angle = this.angle_reset;
         /*----------------- HOVER HORIZONTAL CASE -----------------------*/
-        } else if (this.movementStyle === 'hover-horizontal') {
+        }else if (this.movementStyle === 'hover-horizontal') {
             // b= this.hover_horizontal_range*Math.sin(this.angle_reset) + this.hover_horizontal_Xoffset; right
             // a = -this.hover_horizontal_range*Math.sin(this.angle_reset) + this.hover_horizontal_Xoffset; left
             // a<b
@@ -112,6 +121,12 @@ export class Enemy  extends Obstacle {
                 this.y = this.hover_vertical_range*Math.sin(this.angle) + this.hover_vertical_Yoffset;
                 this.angle += this.angle_vertical_speed;
 
+                break;
+
+            case 'circle':
+                this.x = this.radius*Math.cos(this.angle) + this.x_reset;
+                this.y = this.radius*Math.sin(this.angle) + this.y_reset;
+                this.angle += this.angle_circle_speed;
                 break;
         }
 

@@ -20,14 +20,23 @@ const nextLevelTransition = document.getElementById('next-level-transition');
 let score = 0;
 let level = 1;
 let health = 10;
+// localStorage.setItem('highScores', '');
 
+function sortObjectByValue(obj) {
+    // Convert the object into an array of key-value pairs
+    const sortedEntries = Object.entries(obj).sort((a, b) => a[1] - b[1]);
+
+    // Convert the sorted array back into an object
+    return Object.fromEntries(sortedEntries);
+}
 
 function updateScore() {
     // IF NEXT LEVEL RETURN TRUE, ELSE FALSE
     const scoreBoard = document.getElementById('score-board');
     const levelDisplay = document.getElementById('level-display');
-    // const scoreList = [1,2,3,4,5];
-    const scoreList = [5,10,15,20,25];
+    const scoreList = [1,2,3,4,5,6,7,8,9,10];
+    // const scoreList = [3,6,9,12,15,18,21,24];
+    // const scoreList = [5,10,15,20,25];
     score += 1;
     scoreBoard.innerText = score;
     // SET LEVEL
@@ -38,7 +47,24 @@ function updateScore() {
     }
     return false;
 }
+function saveScoreToStorage(name,score) {
 
+    try {
+        let highScores = JSON.parse(localStorage.getItem('highScores')); // get localStorage obj
+        localStorage.removeItem("highScores");//remove 'highScores' from localStorage
+        highScores[name] = score; // Add name,score
+        // highScores = sortObjectByValue(highScores);
+        let highScores_Json = JSON.stringify(highScores) // Change to JSON format
+        localStorage.setItem('highScores', highScores_Json); // Write to localStorage
+    } catch {
+        let highScores = {}; // Add name,score
+        highScores[name] = score;
+        highScores = sortObjectByValue(highScores);
+        let highScores_Json = JSON.stringify(highScores) // Change to JSON format
+        localStorage.setItem('highScores', highScores_Json); // Write to localStorage
+    }
+
+}
 
 function updateHealth(value) {
 
@@ -97,12 +123,15 @@ function animate(character, Obstacles, FrameStats) {
                 setTimeout(()=>{
                     deadDisplayContainer.style.display = 'flex';
                 },1000)
+                // let name = prompt('INPUT CHAMPION NAME');
+                saveScoreToStorage(localStorage.getItem('playerName'),score);
             }
         }
     }
 
     /*------------------ ITEM ---------------------------*/
     for (let item of Obstacles['itemList']) {
+
         item.update();
         item.draw();
 
@@ -118,9 +147,10 @@ function animate(character, Obstacles, FrameStats) {
                     nextLevelTransition.classList.add('next-level-transition');
 
                     setTimeout(()=>{
+                        Obstacles['itemList'] = generateItem(level);
                         Obstacles['enemyList'] = generateEnemy(level);
                         nextLevelTransition.classList.remove('next-level-transition');
-                    },3000) // Wait 3 seconds after create new enemies
+                    },2000) // Wait 3 seconds after create new enemies
 
                 }
             }
@@ -152,14 +182,19 @@ function animate(character, Obstacles, FrameStats) {
 let Obstacles = {}
 /*---------------- ENEMY INITIALIZATION --------------------*/
 
-
 Obstacles['enemyList'] = generateEnemy(1);
 /*---------------- ITEM INITIALIZATION --------------------*/
 
-Obstacles['itemList'] = generateItem();
+Obstacles['itemList'] = generateItem(1);
 /*---------------- PLAYER INITIALIZATION --------------------*/
 // const gangsterImg = new Image();
-const PLAYER = new Character('resources/Characters/char'+localStorage.getItem("character_index") +  '/Idle.png');
+
+
+let char_index = localStorage.getItem("character_index");
+console.log(char_index)
+// localStorage.setItem("character_index",0);
+
+const PLAYER = new Character('resources/Characters/char'+ char_index +  '/Idle.png',char_index);
 // PLAYER.characterImg.src = 'resources/Run.png';
 
 

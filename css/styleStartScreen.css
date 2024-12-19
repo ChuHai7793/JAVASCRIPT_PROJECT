@@ -16,6 +16,7 @@ body{
     /*position: absolute;*/
     font-family: 'Press Start 2P', cursive;
     font-size: 5rem;
+    font-weight: bold;
     -webkit-text-stroke: 2px white;
 }
 
@@ -34,7 +35,7 @@ body{
     color: #fff; /* White text */
     font-family: 'Press Start 2P', cursive; /* Retro pixel font */
     font-size: 1.5rem; /* Large text size */
-
+    font-weight: bold;
     text-align: center;
     text-shadow: 2px 2px 0 #003300; /* Retro shadow effect */
     cursor: pointer;
@@ -58,3 +59,5 @@ body{
     width:260px;
     height:260px;
 }
+
+
