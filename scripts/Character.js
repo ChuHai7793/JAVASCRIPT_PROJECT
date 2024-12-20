@@ -4,6 +4,28 @@ import {frameX,frameY} from './animation.js'
 import {OFFSET_X,OFFSET_Y} from './animation.js'
 
 
+export const characterInfo = {
+    0: {
+        y_projectile_padding:15,
+        timeOutAnimation:1200,
+        timeOutProjectile:0
+    },
+
+    1: {
+        y_projectile_padding:0,
+        timeOutAnimation:1400,
+        timeOutProjectile:750
+
+    },
+
+    2: {
+        y_projectile_padding:0,
+        timeOutAnimation:1400,
+        timeOutProjectile:750
+    }
+}
+
+
 export class Character {
     constructor(characterResource,char_index){
         this.x = OFFSET_X;
@@ -32,22 +54,26 @@ export class Character {
         this.width_hitbox = this.width - 200;
         this.height_hitbox = this.height -100;
 
+        this.speed = 2;
+
         switch (char_index) {
             case '0':
                 this.maxJumpHeight = 200;
                 this.jumpSpd = 10;
                 this.gravity = 10;
+                this.speed = 2;
                 break
             case '1':
                 this.maxJumpHeight = 100;
                 this.jumpSpd = 10;
-                this.gravity = 7;
-
+                this.gravity = 7
+                this.speed = 4;
                 break;
             case '2':
                 this.maxJumpHeight = 250;
                 this.jumpSpd = 10;
                 this.gravity = 15;
+                this.speed = 6;
                 break;
         }
 

@@ -4,20 +4,24 @@ import {CANVAS_WIDTH} from "./animation.js";
 
 
 
-
+let ratio = 3/4;
 const enemyType = {
-    vertical_1:['resources/enemy/enemy1.png', 500, 0, 100, 80, 293, 155, 2, 90,NaN,NaN, 'vertical'],// angle 90 then the speed is fixed
-    vertical_2:['resources/enemy/enemy1.png', 1200, 0, 100, 80, 293, 155, 2, 90,NaN,NaN, 'vertical'],
+    vertical_1:['resources/enemy/enemy1.png', 500, 0, 100*ratio, 80*ratio, 293, 155, 2, 90,NaN,NaN, 'vertical'],// angle 90 then the speed is fixed
+    vertical_2:['resources/enemy/enemy1.png', 1200, 0, 100*ratio, 80*ratio, 293, 155, 2, 90,NaN,NaN, 'vertical'],
 
 
-    horizontal_1:['resources/enemy/enemy1.png', 0, 400, 100, 80, 293, 155, 6, 0, NaN,NaN,'horizontal'],
-    hover_vertical_1:['resources/enemy/enemy3.png', 500, 300, 100, 80, 218, 177, NaN, 90,NaN,0.5*Math.PI/180,'hover-vertical'],
-    hover_horizontal_1:['resources/enemy/enemy4.png', 500, 600, 100, 80, 213, 212, NaN, 90, 0.4*Math.PI/180,NaN,'hover-horizontal'],
+    horizontal_1:['resources/enemy/enemy1.png', 0, 400, 100*ratio, 80*ratio, 293, 155, 6, 0, NaN,NaN,'horizontal'],
+    hover_vertical_1:['resources/enemy/enemy3.png', 500, 300, 100*ratio, 80*ratio, 218, 177, NaN, 90,NaN,0.5*Math.PI/180,'hover-vertical'],
+    hover_horizontal_1:['resources/enemy/enemy4.png', 500, 600, 100*ratio, 80*ratio, 213, 212, NaN, 90, 0.4*Math.PI/180,NaN,'hover-horizontal'],
 
-    diagonal_1: ['resources/enemy/enemy1.png',0, 0, 100, 80, 293, 155, Math.random() * 2 + 3, 50, NaN,NaN,'diagonal'],// from top right
-    diagonal_2: ['resources/enemy/enemy2.png',1400, 200, 100, 80, 266, 188, Math.random() * 2 + 3, 150, NaN,NaN,'diagonal'],// from top left
+    diagonal_1: ['resources/enemy/enemy1.png',0, 0, 100*ratio, 80*ratio, 293, 155, Math.random() * 2 + 3, 50, NaN,NaN,'diagonal'],// from top right
+    diagonal_2: ['resources/enemy/enemy2.png',1400, 200, 100*ratio, 80*ratio, 266, 188, Math.random() * 2 + 3, 150, NaN,NaN,'diagonal'],// from top left
 
-    sin_1: ['resources/enemy/enemy1.png', 1200, 300, 100, 80, 293, 155, Math.random()  + 1, 50, NaN,NaN,'sin']
+    sin_1: ['resources/enemy/enemy1.png', 1200, 300, 100*ratio, 80*ratio, 293, 155, Math.random()  + 1, 50, NaN,NaN,'sin'],
+
+
+    circle_1: ['resources/enemy/enemy1.png', 700, 300, 100*ratio, 80*ratio, 293, 155, Math.random() * 2 + 2, -90, NaN,NaN,'circle']
+
 }
 
 
@@ -100,9 +104,7 @@ function enemyLevel7(enemyList){
 
 function enemyLevel8(enemyList){
 
-    let temp_enemyList = addSingleEnemy(enemyList, 'resources/enemy/enemy1.png',
-            700, 300, 100, 80,
-            293, 155, Math.random() * 2 + 2, -90, NaN,NaN,'circle');
+    let temp_enemyList = addSingleEnemy(enemyList,...enemyType.circle_1 );
 
     temp_enemyList = addSingleEnemy(temp_enemyList, ...enemyType.hover_horizontal_1);
     temp_enemyList = addSingleEnemy(temp_enemyList, ...enemyType.diagonal_1);

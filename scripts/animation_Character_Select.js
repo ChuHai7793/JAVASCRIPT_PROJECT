@@ -34,6 +34,8 @@ let char3_ImgSrc = 'resources/Characters/char2/Idle.png'
 
 let characters_ImgSrc_List = [char1_ImgSrc,char2_ImgSrc,char3_ImgSrc]
 let character_index = 0;
+
+localStorage.setItem("character_index",'0');
 function changeCharacter(){
     if (character_index<characters_ImgSrc_List.length-1){
         character_index++;
