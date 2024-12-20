@@ -4,7 +4,7 @@ import {Obstacle} from "./Obstacle.js";
 
 
 export class Enemy  extends Obstacle {
-    constructor(ObstacleImg,x,y,width,height,spriteWidth,spriteHeight,speed,angle,angle_horizontal_speed,angle_vertical_speed,movementStyle,) {
+    constructor(ObstacleImg,x,y,width,height,spriteWidth,spriteHeight,speed,angle,angle_horizontal_speed,angle_vertical_speed,movementStyle) {
         super(ObstacleImg,x,y,width,height,spriteWidth,spriteHeight,speed,angle)
 
         this.x_reset = x;

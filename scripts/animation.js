@@ -1,6 +1,6 @@
 import {Character} from './Character.js'
 import {generateEnemy, generateItem} from './levelDesign.js'
-
+import {Projectile} from "./projectiles.js";
 
 export const GAME_CANVAS = document.getElementById('background');
 export const ctx = GAME_CANVAS.getContext('2d');
@@ -92,13 +92,26 @@ function isColliding(obj1, obj2) {
 }
 
 
+let flameImg = new Image();
+flameImg.src = 'resources/effects/flame_projectile.png';
 
 function animate(character, Obstacles, FrameStats) {
+
+
 
     ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
 
     /*------------------ CHARACTER ---------------------------*/
+    // character.update();
     character.draw(character.characterImg);
+
+    /*------------------ PROJECTILES ---------------------------*/
+    if (Obstacles['projectileList'].length !== 0){
+        for (let projectile of Obstacles['projectileList']) {
+            projectile.update();
+            projectile.draw();
+        }
+    }
 
     /*------------------ ENEMY ---------------------------*/
 
@@ -172,7 +185,6 @@ function animate(character, Obstacles, FrameStats) {
     }
 
     gameFrame++;// MOVE TO NEXT FRAME
-
     requestAnimationFrame(() => {
         animate(character, Obstacles, FrameStats)
     });
@@ -180,6 +192,8 @@ function animate(character, Obstacles, FrameStats) {
 
 
 let Obstacles = {}
+
+
 /*---------------- ENEMY INITIALIZATION --------------------*/
 
 Obstacles['enemyList'] = generateEnemy(1);
@@ -191,12 +205,21 @@ Obstacles['itemList'] = generateItem(1);
 
 
 let char_index = localStorage.getItem("character_index");
-console.log(char_index)
-// localStorage.setItem("character_index",0);
+// console.log(char_index)
+// console.log(typeof char_index)
+if (char_index === null) {
+    localStorage.setItem("character_index",'0');
+
+}
 
 const PLAYER = new Character('resources/Characters/char'+ char_index +  '/Idle.png',char_index);
 // PLAYER.characterImg.src = 'resources/Run.png';
-
+// let flame = new Projectile(flameImg,200,200,333/3,150/3,666,300);
+// console.log(typeof PLAYER.y_hitbox)
+let flame;
+// let flame = new Projectile(flameImg,PLAYER.x_hitbox+PLAYER.width_hitbox,PLAYER.y_hitbox,
+//     333/3,150/3,666,300,3,NaN,PLAYER.direction);
+Obstacles['projectileList'] = [];
 
 animate(PLAYER, Obstacles, PLAYER.FrameStats)
 
@@ -207,19 +230,23 @@ bodyElement.addEventListener("keydown", (event) => {
     if (PLAYER.state !== 'Dead') {
         switch (event.key) {
             case 'z':
-                PLAYER.state = 'Run';
-                PLAYER.direction = 'left';
-                PLAYER.setAnimation();
-                PLAYER.moveLeft(5);
+                if (PLAYER.state !== 'Shoot') { // Can't do anything while shooting
+                    PLAYER.state = 'Run';
+                    PLAYER.direction = 'left';
+                    PLAYER.setAnimation();
+                    PLAYER.moveLeft(5);
+                }
                 break;
             case 'c':
-                PLAYER.state = 'Run';
-                PLAYER.direction = 'right';
-                PLAYER.setAnimation();
-                PLAYER.moveRight(5);
+                if (PLAYER.state !== 'Shoot') { // Can't do anything while shooting
+                    PLAYER.state = 'Run';
+                    PLAYER.direction = 'right';
+                    PLAYER.setAnimation();
+                    PLAYER.moveRight(5);
+                }
                 break;
             case 's':
-                if (event.key === 's') {
+                if (PLAYER.state !== 'Shoot') { // Can't do anything while shooting
                     if (PLAYER.state !== 'Jump') {
                         PLAYER.state = 'Jump';
                         PLAYER.setAnimation();
@@ -228,20 +255,43 @@ bodyElement.addEventListener("keydown", (event) => {
                 }
                 break;
             case 'u':
-                PLAYER.state = 'Shoot';
-                PLAYER.setAnimation();
+
+                if (PLAYER.state !== 'Shoot') { // Can't do anything while shooting
+                    // Keep shooting
+                    flame = new Projectile(flameImg,PLAYER.x_hitbox+PLAYER.width_hitbox,PLAYER.y_hitbox,
+                        333/3,150/3,666,300,3,0,PLAYER.direction, PLAYER.width_hitbox);
+
+                    let ShootIntervalId = setInterval(() => {
+                        PLAYER.state = 'Shoot';
+                        PLAYER.setAnimation();
+                    })
+                    // Shoot for 1second then change to idle state, waiting time to finish animation for each character is different
+                    // let timeOut = 1000; // char 0
+                    let timeOut = 1400; // char 1
+                    setTimeout(()=>{
+                        clearInterval(ShootIntervalId);
+                        PLAYER.state = 'Idle';
+                        PLAYER.setAnimation();
+                    },timeOut)
+
+                    let timeOutProjectile = 750; // char 1
+                    setTimeout(()=>{
+                        Obstacles['projectileList'] = [flame]
+                    },timeOutProjectile)
+            }
+
         }
     }
 });
 
 
 bodyElement.addEventListener("keyup", (event) => {
-    if (PLAYER.state !== 'Dead') {
+    if (PLAYER.state !== 'Dead'&&PLAYER.state !== 'Shoot') {
         if ((event.key === 'z' || event.key === 'c')) {
             PLAYER.stopRunning();
         }
 
-        if (PLAYER.state !== 'Jump') {
+        if (PLAYER.state !== 'Jump'&&PLAYER.state !== 'Shoot') {
             PLAYER.state = 'Idle';
             PLAYER.setAnimation();
         }

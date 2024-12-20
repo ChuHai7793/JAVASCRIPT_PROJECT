@@ -27,6 +27,11 @@ export class Character {
         this.paddingLeft = 80;
         this.isRunning = false;
 
+        this.x_hitbox = this.x + 100;
+        this.y_hitbox = this.y +130;
+        this.width_hitbox = this.width - 200;
+        this.height_hitbox = this.height -100;
+
         switch (char_index) {
             case '0':
                 this.maxJumpHeight = 200;
@@ -156,7 +161,7 @@ export class Character {
             this.x_hitbox = this.x + 100;
             this.y_hitbox = this.y +130;
             this.width_hitbox = this.width - 200;
-            this.height_hitbox = this.height -100;
+            this.height_hitbox = this.height - 100;
 
         }else{
 
@@ -174,8 +179,8 @@ export class Character {
     }
 
     setAnimation() {
-
-        this.characterImg.src = 'resources/Characters/char'+localStorage.getItem("character_index") + '/'+this.state + '.png';
+        let char_index = localStorage.getItem("character_index")
+        this.characterImg.src = 'resources/Characters/char'+char_index+ '/'+this.state + '.png';
 
         switch (this.state) {
             case 'Run':
@@ -189,8 +194,14 @@ export class Character {
                 this.FrameStats.staggerFrames = 32;
                 break;
             case 'Shoot':
-                this.FrameStats.maxFrames = 3;
-                this.FrameStats.staggerFrames = 8;
+                if (char_index === '0'){
+                    this.FrameStats.maxFrames = 3;
+                    this.FrameStats.staggerFrames = 8;
+                } else if (char_index === '1'){
+                    this.FrameStats.maxFrames = 11; // total frames - 1
+                    this.FrameStats.staggerFrames = 18;
+                }
+
                 break;
             case 'Jump':
                 this.FrameStats.maxFrames = 9;

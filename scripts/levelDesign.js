@@ -46,33 +46,6 @@ export function generateEnemy(level) {
 
     return enemyList
 }
-/*---------------------------------- ITEM --------------------------------------*/
-export function addSingleItem(itemList, ImgSrc,
-                              x, y, width, height,
-                              spriteWidth, spriteHeight, name) {
-    const Item_Img = new Image();
-    Item_Img.src = ImgSrc;
-    itemList.push(new Item(Item_Img,x, y, width, height,
-        spriteWidth, spriteHeight,NaN,NaN,name));
-    return itemList
-}
-
-export function generateItem(level){
-    let itemList = []
-    try {
-        itemList = eval(`${'itemLevel'+level}(itemList)`);
-    }
-    catch(err) {
-        console.log(err.message);
-        itemList = itemLevel1(itemList);
-    }
-
-    // addSingleItem(itemList,'resources/item/BronzeCoin_1.png',
-    //     200,0,100,80,
-    //     563,564,'bronzeCoin')
-    return itemList
-}
-
 
 /*------------------------- LEVEL DESIGN ENEMY ---------------------------------*/
 function enemyLevel1(enemyList){
@@ -149,6 +122,32 @@ function enemyLevel9(enemyList){
     return temp_enemyList
 }
 
+/*---------------------------------- ITEM --------------------------------------*/
+export function addSingleItem(itemList, ImgSrc,
+                              x, y, width, height,
+                              spriteWidth, spriteHeight, name) {
+    const Item_Img = new Image();
+    Item_Img.src = ImgSrc;
+    itemList.push(new Item(Item_Img,x, y, width, height,
+        spriteWidth, spriteHeight,NaN,NaN,name));
+    return itemList
+}
+
+export function generateItem(level){
+    let itemList = []
+    try {
+        itemList = eval(`${'itemLevel'+level}(itemList)`);
+    }
+    catch(err) {
+        console.log(err.message);
+        itemList = itemLevel1(itemList);
+    }
+
+    // addSingleItem(itemList,'resources/item/BronzeCoin_1.png',
+    //     200,0,100,80,
+    //     563,564,'bronzeCoin')
+    return itemList
+}
 
 /*------------------------- LEVEL DESIGN ITEM ---------------------------------*/
 function itemLevel1(itemList){
