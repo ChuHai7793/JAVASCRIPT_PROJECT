@@ -4,7 +4,7 @@ import {Obstacle} from "./Obstacle.js";
 
 
 export class Enemy  extends Obstacle {
-    constructor(ObstacleImg,x,y,width,height,spriteWidth,spriteHeight,speed,angle,angle_horizontal_speed,angle_vertical_speed,radius,movementStyle) {
+    constructor(ObstacleImg,x,y,width,height,spriteWidth,spriteHeight,speed,angle,angle_horizontal_speed,angle_vertical_speed,angle_circle_speed,radius,movementStyle) {
         super(ObstacleImg,x,y,width,height,spriteWidth,spriteHeight,speed,angle)
 
         this.x_reset = x;
@@ -29,7 +29,7 @@ export class Enemy  extends Obstacle {
         this.hover_vertical_Yoffset = y; // Change the starting point for hovering
 
         // CIRCLE
-        this.angle_circle_speed = 0.5*Math.PI/180;
+        this.angle_circle_speed = angle_circle_speed*Math.PI/180;
         this.radius = radius;
     }
 

@@ -6,30 +6,30 @@ import {CANVAS_WIDTH} from "./animation.js";
 
 let ratio = 3/4;
 const enemyType = {
-    vertical_1:['resources/enemy/enemy1.png', 500, 0, 100*ratio, 80*ratio, 293, 155, 2, 90,NaN,NaN,NaN, 'vertical'],// angle 90 then the speed is fixed
-    vertical_2:['resources/enemy/enemy1.png', 1200, 0, 100*ratio, 80*ratio, 293, 155, 2, 90,NaN,NaN,NaN, 'vertical'],
+    vertical_1:['resources/enemy/enemy1.png', 500, 0, 100*ratio, 80*ratio, 293, 155, 2, 90,NaN,NaN,NaN,NaN, 'vertical'],// angle 90 then the speed is fixed
+    vertical_2:['resources/enemy/enemy1.png', 1200, 0, 100*ratio, 80*ratio, 293, 155, 2, 90,NaN,NaN,NaN,NaN, 'vertical'],
 
 
-    horizontal_1:['resources/enemy/enemy1.png', 0, 400, 100*ratio, 80*ratio, 293, 155, 6, 0, NaN,NaN,NaN,'horizontal'],
-    hover_vertical_1:['resources/enemy/enemy3.png', 500, 300, 100*ratio, 80*ratio, 218, 177, NaN, 90,NaN,0.5*Math.PI/180,NaN,'hover-vertical'],
+    horizontal_1:['resources/enemy/enemy1.png', 0, 400, 100*ratio, 80*ratio, 293, 155, 6, 0, NaN,NaN,NaN,NaN,'horizontal'],
+    hover_vertical_1:['resources/enemy/enemy3.png', 500, 300, 100*ratio, 80*ratio, 218, 177, NaN, 90,NaN,0.5*Math.PI/180,NaN,NaN,'hover-vertical'],
 
 
-    hover_horizontal_1:['resources/enemy/enemy4.png', 500, 600, 100*ratio, 80*ratio, 213, 212, NaN, 90, 0.4*Math.PI/180,NaN,NaN,'hover-horizontal'],
-    hover_horizontal_2:['resources/enemy/enemy4.png', 700, 400, 100*ratio, 80*ratio, 213, 212, NaN, 90, 0.4*Math.PI/180,NaN,NaN,'hover-horizontal'],
+    hover_horizontal_1:['resources/enemy/enemy4.png', 500, 600, 100*ratio, 80*ratio, 213, 212, NaN, 90, 0.4*Math.PI/180,NaN,NaN,NaN,'hover-horizontal'],
+    hover_horizontal_2:['resources/enemy/enemy4.png', 700, 400, 100*ratio, 80*ratio, 213, 212, NaN, 90, 0.4*Math.PI/180,NaN,NaN,NaN,'hover-horizontal'],
 
-    diagonal_1: ['resources/enemy/enemy1.png',0, 0, 100*ratio, 80*ratio, 293, 155, 2, 50, NaN,NaN,NaN,'diagonal'],// from top right
-    diagonal_2: ['resources/enemy/enemy2.png',1400, 200, 100*ratio, 80*ratio, 266, 188, 2, 150, NaN,NaN,NaN,'diagonal'],// from top left
+    diagonal_1: ['resources/enemy/enemy1.png',0, 0, 100*ratio, 80*ratio, 293, 155, 2, 50, NaN,NaN,NaN,NaN,'diagonal'],// from top right
+    diagonal_2: ['resources/enemy/enemy2.png',1400, 200, 100*ratio, 80*ratio, 266, 188, 2, 150, NaN,NaN,NaN,NaN,'diagonal'],// from top left
 
-    sin_1: ['resources/enemy/enemy1.png', 1200, 300, 100*ratio, 80*ratio, 293, 155, Math.random()  + 1, 50, NaN,NaN,NaN,'sin'],
+    sin_1: ['resources/enemy/enemy1.png', 1200, 300, 100*ratio, 80*ratio, 293, 155, Math.random()  + 1, 50, NaN,NaN,NaN,NaN,'sin'],
 
 
-    circle_1: ['resources/enemy/enemy1.png', 700, 300, 100*ratio, 80*ratio, 293, 155, NaN, -90, NaN,NaN,300,'circle'],
-    circle_2: ['resources/enemy/enemy1.png', 500, 300, 100*ratio, 80*ratio, 293, 155, NaN, -90, NaN,NaN,300,'circle'],
+    circle_1: ['resources/enemy/enemy1.png', 700, 300, 100*ratio, 80*ratio, 293, 155, NaN, -90, NaN,NaN,0.3,300,'circle'],
+    circle_2: ['resources/enemy/enemy1.png', 500, 300, 100*ratio, 80*ratio, 293, 155, NaN, -90, NaN,NaN,0.3,300,'circle'],
 
-    arc_1:['resources/enemy/enemy1.png', 700, 500, 100*ratio, 80*ratio, 293, 155, 0.8, -90, NaN,NaN,120,'arc'],
-    arc_2:['resources/enemy/enemy1.png', 700, 500, 100*ratio, 80*ratio, 293, 155, 0.8, 90, NaN,NaN,120,'arc'],
-    arc_3:['resources/enemy/enemy1.png', 700, 500, 100*ratio, 80*ratio, 293, 155, 1, 45, NaN,NaN,120,'arc'],
-    arc_4:['resources/enemy/enemy1.png', 700, 500, 100*ratio, 80*ratio, 293, 155, 1, -45, NaN,NaN,120,'arc'],
+    arc_1:['resources/enemy/enemy1.png', 700, 500, 100*ratio, 80*ratio, 293, 155, 0.8, -90, NaN,NaN,0.3,120,'arc'],
+    arc_2:['resources/enemy/enemy1.png', 700, 500, 100*ratio, 80*ratio, 293, 155, 0.8, 90, NaN,NaN,0.3,120,'arc'],
+    arc_3:['resources/enemy/enemy1.png', 700, 500, 100*ratio, 80*ratio, 293, 155, 1, 45, NaN,NaN,0.4,120,'arc'],
+    arc_4:['resources/enemy/enemy1.png', 700, 500, 100*ratio, 80*ratio, 293, 155, 1, -45, NaN,NaN,0.4,120,'arc'],
 
 }
 
@@ -39,11 +39,11 @@ const enemyType = {
 export function addSingleEnemy(enemyList, ImgSrc,
                         x, y, width, height,
                         spriteWidth, spriteHeight, speed, angle,
-                        angle_horizontal_speed,angle_vertical_speed, radius,movementStyle) {
+                        angle_horizontal_speed,angle_vertical_speed,angle_circle_speed, radius,movementStyle) {
     const Enemy_Img = new Image();
     Enemy_Img.src = ImgSrc;
     enemyList.push(new Enemy(Enemy_Img, x, y, width, height, spriteWidth, spriteHeight, speed,
-        angle,angle_horizontal_speed,angle_vertical_speed, radius,movementStyle));
+        angle,angle_horizontal_speed,angle_vertical_speed, angle_circle_speed, radius,movementStyle));
     return enemyList
 }
 
@@ -174,13 +174,33 @@ function enemyLevel14(enemyList){
     return temp_enemyList
 }
 
-function enemyLevel1(enemyList){
+function enemyLevel15(enemyList){
 
     let temp_enemyList = addSingleEnemy(enemyList, ...enemyType.arc_1);
     temp_enemyList = addSingleEnemy(temp_enemyList, ...enemyType.arc_2);
     temp_enemyList = addSingleEnemy(temp_enemyList, ...enemyType.arc_3);
     return temp_enemyList
 }
+
+function enemyLevel16(enemyList){
+
+    let temp_enemyList = addSingleEnemy(enemyList, ...enemyType.arc_1);
+    temp_enemyList = addSingleEnemy(temp_enemyList, ...enemyType.arc_2);
+    temp_enemyList = addSingleEnemy(temp_enemyList, ...enemyType.arc_3);
+    temp_enemyList = addSingleEnemy(temp_enemyList, ...enemyType.circle_1);
+    return temp_enemyList
+}
+
+function enemyLevel1(enemyList){
+
+    let temp_enemyList = addSingleEnemy(enemyList, ...enemyType.arc_1);
+    temp_enemyList = addSingleEnemy(temp_enemyList, ...enemyType.arc_2);
+    temp_enemyList = addSingleEnemy(temp_enemyList, ...enemyType.arc_3);
+    temp_enemyList = addSingleEnemy(temp_enemyList, ...enemyType.circle_1);
+    return temp_enemyList
+}
+
+
 
 
 
