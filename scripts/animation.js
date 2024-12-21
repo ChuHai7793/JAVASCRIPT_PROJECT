@@ -1,6 +1,6 @@
 import {Character} from './Character.js'
 import {generateEnemy, generateItem} from './levelDesign.js'
-import {Projectile} from "./projectiles.js";
+import {Projectile} from "./Projectiles.js";
 import {characterInfo} from "./Character.js";
 
 
@@ -121,7 +121,7 @@ function animateEnemy(character) {
         enemy.draw();
 
         if (enemy.y > CANVAS_HEIGHT - enemy.height || enemy.y < 0 ||
-            enemy.x > CANVAS_WIDTH - enemy.width || enemy.x < 0) {
+            enemy.x > CANVAS_WIDTH - enemy.width  || enemy.x < 0) {
             enemy.reset(character.x);
         }
 
@@ -132,8 +132,11 @@ function animateEnemy(character) {
 
                 switch (char_index) {
                     case '0':
-                        Obstacles['projectileList'].splice(itemId, 1);
+                    case '2':
+                        Obstacles['projectileList'].splice(itemId, 1); // Projectile disappear on impact
                         break;
+                    case '1':
+                        break; // Projectile continues moving
                 }
                 //
 
@@ -278,6 +281,10 @@ let flameProjectile2;
 let flameProjectile3;
 let flameProjectile4;
 
+let waterImg = new Image();
+waterImg.src = 'resources/projectiles/water_projectile.png';
+let waterProjectile5;
+
 Obstacles['projectileList'] = [];
 
 /*---------------- RUN ANIMATION --------------------*/
@@ -316,20 +323,10 @@ bodyElement.addEventListener("keydown", (event) => {
                 break;
             case 'u':
                 // Can only shoot while being in Idle state and no projectile seen on screen
-                if (PLAYER.state === 'Idle' && Obstacles['projectileList'].length === 0 ) {
+                if (PLAYER.state === 'Idle' && Obstacles['projectileList'].length === 0 && !PLAYER.onAirCheck() ) {
 
                     // // Keep shooting
                     let ShootIntervalId = setInterval(() => {
-
-                        // switch (char_index) {
-                        //     case '0':
-                        //     case '1':
-                        //         PLAYER.state = 'Shoot';
-                        //         break;
-                        //     case '2':
-                        //         PLAYER.state = 'Attack_3';
-                        //         break;
-                        // }
                         PLAYER.state = 'Shoot';
                         PLAYER.setAnimation();
                     })
@@ -346,16 +343,19 @@ bodyElement.addEventListener("keydown", (event) => {
                     /*-------------------- SET UP PROJECTILE OBJECTS ---------------------------*/
                     // CHARACTER 1 PROJECTILE
                     flameProjectile1 = new Projectile(flameImg, PLAYER.x_hitbox + PLAYER.width_hitbox, PLAYER.y_hitbox,
-                        333 / 3, 150 / 3, 666, 300, 4, 0, PLAYER.direction, PLAYER.width_hitbox,700);
+                        666 / 6, 300 / 6, 666, 300, 4, 0, PLAYER.direction, PLAYER.width_hitbox,700);
                     flameProjectile2 = new Projectile(flameImg, PLAYER.x_hitbox + PLAYER.width_hitbox, PLAYER.y_hitbox,
-                        333 / 3, 150 / 3, 666, 300, 4, 0, PLAYER.direction, PLAYER.width_hitbox);
+                        666 / 6, 300 / 6, 666, 300, 4, 0, PLAYER.direction, PLAYER.width_hitbox);
                     flameProjectile3 = new Projectile(flameImg, PLAYER.x_hitbox + PLAYER.width_hitbox, PLAYER.y_hitbox,
-                        333 / 3, 150 / 3, 666, 300, 4, 0, PLAYER.direction, PLAYER.width_hitbox,700);
+                        666 / 6, 300 / 6, 666, 300, 4, 0, PLAYER.direction, PLAYER.width_hitbox,700);
 
-                    // CHARACTER 2 PROJECTILE - MORE SPEED, LONGER DISTANCE
+                    // CHARACTER 2 PROJECTILE - MORE SPEED, LONGEST DISTANCE
                     flameProjectile4 = new Projectile(flameImg, PLAYER.x_hitbox + PLAYER.width_hitbox, PLAYER.y_hitbox,
-                        333 / 3, 150 / 3, 666, 300, 6, 0, PLAYER.direction, PLAYER.width_hitbox,1000);
+                        666 / 6, 300 / 6, 666, 300, 6, 0, PLAYER.direction, PLAYER.width_hitbox,1000);
 
+                    // CHARACTER 2 PROJECTILE - MORE SPEED, SHORTEST DISTANCE
+                    waterProjectile5 = new Projectile(waterImg, PLAYER.x_hitbox + PLAYER.width_hitbox, PLAYER.y_hitbox,
+                        1016/10, 577/10 , 1016, 577, 2, 0, PLAYER.direction, PLAYER.width_hitbox,300);
 
                     // Projectile disappear after 'timeOutProjectile'
                     let timeOutProjectile = characterInfo[char_index].timeOutProjectile;
@@ -368,6 +368,7 @@ bodyElement.addEventListener("keydown", (event) => {
                                 Obstacles['projectileList'] = [flameProjectile4]
                                 break;
                             case '2':
+                                Obstacles['projectileList'] = [waterProjectile5]
                                 break;
                         }
                         // Obstacles['projectileList'] = [flameProjectile1,flameProjectile2,flameProjectile3]

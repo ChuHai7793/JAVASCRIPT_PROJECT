@@ -6,7 +6,7 @@ import {OFFSET_X,OFFSET_Y} from './animation.js'
 
 export const characterInfo = {
     0: {
-        y_projectile_padding:15,
+        y_projectile_padding:15, // To match the y position of projectile to the hand/gun when shooting
         timeOutAnimation:1200,
         timeOutProjectile:0
     },
@@ -20,8 +20,8 @@ export const characterInfo = {
 
     2: {
         y_projectile_padding:0,
-        timeOutAnimation:800,
-        timeOutProjectile:750
+        timeOutAnimation:600,
+        timeOutProjectile:400
     },
 
 }
@@ -231,7 +231,7 @@ export class Character {
                     this.FrameStats.staggerFrames = 18;
                 }  else if (char_index === '2'){
                     this.FrameStats.maxFrames = 5; // total frames - 1
-                    this.FrameStats.staggerFrames = 30;
+                    this.FrameStats.staggerFrames = 15;
                 }
                 break;
             // case 'Attack_3':

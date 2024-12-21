@@ -45,9 +45,6 @@ export class Projectile  extends Obstacle {
         }
 
         // SLOW DOWN ANIMATION
-        // if (gameFrame % 8=== 0){
-        //                 this.frame > 41 ? this.frame = 0 : this.frame++ ;}
-
         switch(char_index){
             case '0':
                 if (gameFrame % 8 === 0){
@@ -60,6 +57,9 @@ export class Projectile  extends Obstacle {
                 }
                 break;
             case '2':
+                if (gameFrame % 8=== 0){
+                    this.frame > 41 ? this.frame = 0 : this.frame++ ;
+                }
                 break;
         }
     }

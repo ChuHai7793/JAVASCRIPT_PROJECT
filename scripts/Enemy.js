@@ -4,7 +4,7 @@ import {Obstacle} from "./Obstacle.js";
 
 
 export class Enemy  extends Obstacle {
-    constructor(ObstacleImg,x,y,width,height,spriteWidth,spriteHeight,speed,angle,angle_horizontal_speed,angle_vertical_speed,movementStyle) {
+    constructor(ObstacleImg,x,y,width,height,spriteWidth,spriteHeight,speed,angle,angle_horizontal_speed,angle_vertical_speed,radius,movementStyle) {
         super(ObstacleImg,x,y,width,height,spriteWidth,spriteHeight,speed,angle)
 
         this.x_reset = x;
@@ -30,7 +30,7 @@ export class Enemy  extends Obstacle {
 
         // CIRCLE
         this.angle_circle_speed = 0.5*Math.PI/180;
-        this.radius = 300;
+        this.radius = radius;
     }
 
     reset(char_x,char_y) {
@@ -65,8 +65,30 @@ export class Enemy  extends Obstacle {
                 this.x =  0;
             }
 
+        /*----------------- CIRCLE CASE -----------------------*/
         } else if (this.movementStyle === 'circle'){
             this.angle = this.angle_reset;
+
+        /*----------------- ARC CASE -----------------------*/
+        } else if (this.movementStyle === 'arc') {
+            this.angle = this.angle_reset;
+
+            if (Math.abs(this.x - char_x) < this.width*5) { // WHEN COLLIDE
+                if (this.x > 300) {
+                    this.x_reset =  0;
+                } else {
+                    this.x_reset = char_x + 800;
+                }
+            } else { // WHEN REACH THE CANVAS LEFT/RIGHT LIMIT
+                if (this.x > CANVAS_WIDTH - this.width ) {
+                    this.x_reset = CANVAS_WIDTH - this.width*2;
+                    this.speed = -this.speed;
+                } else if (this.x < 0) {
+                    this.x_reset = this.width;
+                    this.speed = -this.speed;
+                }
+            }
+
         /*----------------- HOVER HORIZONTAL CASE -----------------------*/
         }else if (this.movementStyle === 'hover-horizontal') {
             // b= this.hover_horizontal_range*Math.sin(this.angle_reset) + this.hover_horizontal_Xoffset; right
@@ -127,6 +149,14 @@ export class Enemy  extends Obstacle {
                 this.x = this.radius*Math.cos(this.angle) + this.x_reset;
                 this.y = this.radius*Math.sin(this.angle) + this.y_reset;
                 this.angle += this.angle_circle_speed;
+                break;
+
+            case 'arc':
+                this.x_reset += this.speed;
+                this.x = this.radius*Math.cos(this.angle) + this.x_reset;
+                this.y = this.radius*Math.sin(this.angle) + this.y_reset;
+                this.angle += this.angle_circle_speed;
+
                 break;
         }
 
