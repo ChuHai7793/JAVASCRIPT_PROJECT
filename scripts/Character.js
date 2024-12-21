@@ -24,11 +24,6 @@ export const characterInfo = {
         timeOutProjectile:750
     },
 
-    3: {
-        y_projectile_padding:0,
-        timeOutAnimation:400,
-        timeOutProjectile:750
-    }
 }
 
 
@@ -37,10 +32,12 @@ export class Character {
         this.x = OFFSET_X;
         this.y = OFFSET_Y;
         this.state = 'Start'
+
         this.spriteWidth = 128;
         this.spriteHeight = 128;
         this.width = 128*2;
         this.height = 128*2;
+
         this.FrameStats = {
             maxFrames: 5,
             staggerFrames: 8
