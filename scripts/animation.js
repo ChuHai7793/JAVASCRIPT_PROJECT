@@ -126,7 +126,22 @@ function animateEnemy(character) {
         }
 
 
-        // CHECK COLLISION EVENT
+        // CHECK COLLISION BETWEEN PROJECTILE AND ENEMY
+        for (let itemId=0; itemId < Obstacles['projectileList'].length; itemId++) {
+            if (isColliding(Obstacles['projectileList'][itemId], enemy)) {
+
+                switch (char_index) {
+                    case '0':
+                        Obstacles['projectileList'].splice(itemId, 1);
+                        break;
+                }
+                //
+
+                let enemyId = Obstacles['enemyList'].indexOf(enemy)
+                Obstacles['enemyList'].splice(enemyId, 1);
+            }
+        }
+        // CHECK COLLISION BETWEEN CHARACTER AND ENEMY
         if (isColliding(enemy, character)) {
             enemy.reset(character.x);
 
@@ -152,7 +167,7 @@ function animateItem(character) {
 
         item.update();
         item.draw();
-
+        // CHECK COLLISION BETWEEN CHARACTER AND ITEM
         if (isColliding(item, character)) {
 
             if (item.name === 'goldCoin') {
@@ -189,32 +204,40 @@ function animate(character, Obstacles, FrameStats) {
 
     /*------------------------------ PROJECTILES ---------------------------*/
 
-    if (Obstacles['projectileList'].length !== 0 && projectileId < Obstacles['projectileList'].length) {
-
+    if (projectileId < Obstacles['projectileList'].length) {
         let currentProjectile = Obstacles['projectileList'][projectileId];
         let tempProjectileList = Obstacles['projectileList'].slice(0, projectileId + 1);
-        if ((currentProjectile.x - currentProjectile.x_reset < 300 && character.direction==='right')||
-        (currentProjectile.x_reset - currentProjectile.x < 300 && character.direction==='left')){ // when the furthest projectile still less than 500, display current projectiles in tempProjectileList
+        // Check if the last projectile has travelled more than 300, if true, fire next projectile
+        if ((currentProjectile.x - currentProjectile.x_reset < 300 && currentProjectile.direction==='right')||
+        (currentProjectile.x_reset - currentProjectile.x < 300 && currentProjectile.direction==='left')){
             for (let projectile of tempProjectileList) {
-                projectile.update();
+                projectile.update(char_index);
                 projectile.draw(char_index);
             }
         } else {
             projectileId++; // Increase projectileId also means that tempProjectileList will add next projectile to itself => Shoot new projectile
         }
     } else {
-        projectileId = 0;
-        Obstacles['projectileList'] = [];
+        if (Obstacles['projectileList'].length !== 0 ){
+            let lastProjectile = Obstacles['projectileList'][Obstacles['projectileList'].length-1];
 
+            // Continue animation until all projectiles go max distance
+            if  (
+                ((lastProjectile.x - lastProjectile.x_reset < 1000 && lastProjectile.direction==='right')||
+                (lastProjectile.x_reset - lastProjectile.x < 1000 && lastProjectile.direction==='left'))&&
+                lastProjectile.x > 0 && lastProjectile.x < 1600
+                ){
+                for (let projectile of Obstacles['projectileList']) {
+                    projectile.update(char_index);
+                    projectile.draw(char_index);
+                }
+            // Otherwise, reset projectileId and Obstacles['projectileList']
+            } else {
+                projectileId = 0;
+                Obstacles['projectileList'] = [];
+            }
+        }
     }
-
-
-        // for (let projectile of Obstacles['projectileList']) {
-        //     projectile.update();
-        //     projectile.draw(char_index);
-        //     console.log(char_index)
-        // }
-
 
 
     /*------------------------- ENEMY ----------------------------------*/
@@ -249,10 +272,11 @@ const PLAYER = new Character('resources/Characters/char' + char_index + '/Idle.p
 
 /*---------------- PROJECTILE INITIALIZATION --------------------*/
 let flameImg = new Image();
-flameImg.src = 'resources/effects/flame_projectile.png';
-let flameProjectile;
+flameImg.src = 'resources/projectiles/flame_projectile.png';
+let flameProjectile1;
 let flameProjectile2;
 let flameProjectile3;
+let flameProjectile4;
 
 Obstacles['projectileList'] = [];
 
@@ -295,14 +319,17 @@ bodyElement.addEventListener("keydown", (event) => {
                 if (PLAYER.state === 'Idle' && Obstacles['projectileList'].length === 0 ) {
 
                     // // Keep shooting
-                    flameProjectile = new Projectile(flameImg, PLAYER.x_hitbox + PLAYER.width_hitbox, PLAYER.y_hitbox,
-                        333 / 3, 150 / 3, 666, 300, 4, 0, PLAYER.direction, PLAYER.width_hitbox);
-                    flameProjectile2 = new Projectile(flameImg, PLAYER.x_hitbox + PLAYER.width_hitbox, PLAYER.y_hitbox,
-                        333 / 3, 150 / 3, 666, 300, 4, 0, PLAYER.direction, PLAYER.width_hitbox);
-                    flameProjectile3 = new Projectile(flameImg, PLAYER.x_hitbox + PLAYER.width_hitbox, PLAYER.y_hitbox,
-                        333 / 3, 150 / 3, 666, 300, 4, 0, PLAYER.direction, PLAYER.width_hitbox);
-
                     let ShootIntervalId = setInterval(() => {
+
+                        // switch (char_index) {
+                        //     case '0':
+                        //     case '1':
+                        //         PLAYER.state = 'Shoot';
+                        //         break;
+                        //     case '2':
+                        //         PLAYER.state = 'Attack_3';
+                        //         break;
+                        // }
                         PLAYER.state = 'Shoot';
                         PLAYER.setAnimation();
                     })
@@ -314,10 +341,36 @@ bodyElement.addEventListener("keydown", (event) => {
                         PLAYER.setAnimation();
                     }, timeOutAnimation)
 
+
+
+                    /*-------------------- SET UP PROJECTILE OBJECTS ---------------------------*/
+                    // CHARACTER 1 PROJECTILE
+                    flameProjectile1 = new Projectile(flameImg, PLAYER.x_hitbox + PLAYER.width_hitbox, PLAYER.y_hitbox,
+                        333 / 3, 150 / 3, 666, 300, 4, 0, PLAYER.direction, PLAYER.width_hitbox,700);
+                    flameProjectile2 = new Projectile(flameImg, PLAYER.x_hitbox + PLAYER.width_hitbox, PLAYER.y_hitbox,
+                        333 / 3, 150 / 3, 666, 300, 4, 0, PLAYER.direction, PLAYER.width_hitbox);
+                    flameProjectile3 = new Projectile(flameImg, PLAYER.x_hitbox + PLAYER.width_hitbox, PLAYER.y_hitbox,
+                        333 / 3, 150 / 3, 666, 300, 4, 0, PLAYER.direction, PLAYER.width_hitbox,700);
+
+                    // CHARACTER 2 PROJECTILE - MORE SPEED, LONGER DISTANCE
+                    flameProjectile4 = new Projectile(flameImg, PLAYER.x_hitbox + PLAYER.width_hitbox, PLAYER.y_hitbox,
+                        333 / 3, 150 / 3, 666, 300, 6, 0, PLAYER.direction, PLAYER.width_hitbox,1000);
+
+
                     // Projectile disappear after 'timeOutProjectile'
                     let timeOutProjectile = characterInfo[char_index].timeOutProjectile;
                     setTimeout(() => {
-                        Obstacles['projectileList'] = [flameProjectile,flameProjectile2,flameProjectile3]
+                        switch (char_index) {
+                            case '0':
+                                Obstacles['projectileList'] = [flameProjectile1,flameProjectile2,flameProjectile3]
+                                break;
+                            case '1':
+                                Obstacles['projectileList'] = [flameProjectile4]
+                                break;
+                            case '2':
+                                break;
+                        }
+                        // Obstacles['projectileList'] = [flameProjectile1,flameProjectile2,flameProjectile3]
                     }, timeOutProjectile)
                 }
         }

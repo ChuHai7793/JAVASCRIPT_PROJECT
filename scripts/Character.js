@@ -226,9 +226,15 @@ export class Character {
                 } else if (char_index === '1'){
                     this.FrameStats.maxFrames = 11; // total frames - 1
                     this.FrameStats.staggerFrames = 18;
+                }  else if (char_index === '2'){
+                    this.FrameStats.maxFrames = 5; // total frames - 1
+                    this.FrameStats.staggerFrames = 36;
                 }
-
                 break;
+            // case 'Attack_3':
+            //     this.FrameStats.maxFrames = 5;
+            //     this.FrameStats.staggerFrames = 36;
+            //     break;
             case 'Jump':
                 this.FrameStats.maxFrames = 9;
                 this.FrameStats.staggerFrames = 20;

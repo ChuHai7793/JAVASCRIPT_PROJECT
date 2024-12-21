@@ -19,33 +19,48 @@ import {characterInfo} from "./Character.js";
 // }
 
 export class Projectile  extends Obstacle {
-    constructor(ObstacleImg,x,y,width,height,spriteWidth,spriteHeight,speed,angle,char_direction,char_width_hitbox) {
+    constructor(ObstacleImg,x,y,width,height,spriteWidth,spriteHeight,speed,angle,char_direction,charWidthHitBox, maxDistance) {
         super(ObstacleImg,x,y,width,height,spriteWidth,spriteHeight,speed,angle)
         this.x_reset = x;
         this.y_reset = y;
         this.direction = char_direction;
-        this.char_width_hitbox = char_width_hitbox;
+        this.char_width_hitbox = charWidthHitBox;
+        this.maxDistance = maxDistance;
     }
 
-    update() {
+    update(char_index) {
         super.update();
         // console.log(this.direction);
         if (this.direction === 'right'){
             this.x += this.speed;
-            if (this.x >this.x_reset + 1000){
+            if (this.x >this.x_reset + this.maxDistance){
                 this.x = -Infinity;
             }
         } else {
             this.x -= this.speed;
 
-            if (this.x < this.x_reset - 1000){
+            if (this.x < this.x_reset - this.maxDistance){
                 this.x = -Infinity;
             }
         }
 
         // SLOW DOWN ANIMATION
-        if (gameFrame % 8=== 0){
-            this.frame > 41 ? this.frame = 0 : this.frame++ ;
+        // if (gameFrame % 8=== 0){
+        //                 this.frame > 41 ? this.frame = 0 : this.frame++ ;}
+
+        switch(char_index){
+            case '0':
+                if (gameFrame % 8 === 0){
+                    this.frame > 10 ? this.frame = 0 : this.frame++ ;
+                }
+                break;
+            case '1': // STANDARD FOR FLAME PROJECTILE
+                if (gameFrame % 8=== 0){
+                    this.frame > 41 ? this.frame = 0 : this.frame++ ;
+                }
+                break;
+            case '2':
+                break;
         }
     }
 
