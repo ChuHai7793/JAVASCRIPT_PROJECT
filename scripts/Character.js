@@ -20,7 +20,13 @@ export const characterInfo = {
 
     2: {
         y_projectile_padding:0,
-        timeOutAnimation:1400,
+        timeOutAnimation:800,
+        timeOutProjectile:750
+    },
+
+    3: {
+        y_projectile_padding:0,
+        timeOutAnimation:400,
         timeOutProjectile:750
     }
 }
@@ -228,7 +234,7 @@ export class Character {
                     this.FrameStats.staggerFrames = 18;
                 }  else if (char_index === '2'){
                     this.FrameStats.maxFrames = 5; // total frames - 1
-                    this.FrameStats.staggerFrames = 36;
+                    this.FrameStats.staggerFrames = 30;
                 }
                 break;
             // case 'Attack_3':

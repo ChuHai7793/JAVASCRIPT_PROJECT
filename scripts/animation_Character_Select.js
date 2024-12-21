@@ -31,8 +31,8 @@ function animate(img,FrameStats) {
 let char1_ImgSrc = 'resources/Characters/char0/Idle.png'
 let char2_ImgSrc = 'resources/Characters/char1/Idle.png'
 let char3_ImgSrc = 'resources/Characters/char2/Idle.png'
-
-let characters_ImgSrc_List = [char1_ImgSrc,char2_ImgSrc,char3_ImgSrc]
+let char4_ImgSrc = 'resources/Characters/char3/Idle.png'
+let characters_ImgSrc_List = [char1_ImgSrc,char2_ImgSrc,char3_ImgSrc,char4_ImgSrc]
 let character_index = 0;
 
 localStorage.setItem("character_index",'0');
