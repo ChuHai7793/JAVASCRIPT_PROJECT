@@ -119,15 +119,18 @@ function slowDownAnimation(character, FrameStats) {
 
 
 
-function animateEffectOnImpact(){
+function addToEffectList(impactObject){
+    Obstacles['effectList'].push( new Effect(effectImg,impactObject.x - impactObject.width_hitbox/2,
+        impactObject.y - impactObject.height_hitbox/2,774/5,788/5,
+        774,788))
 
-    Obstacles['effectList'].push( new Obstacle(effectImg,500,500,1153,715,
-        1153,715))
-    Obstacles['effectList'][0].draw();
+
+
 }
 function animateEnemy(character) {
 
     for (let enemy of Obstacles['enemyList']) {
+
 
         enemy.update();
         enemy.draw();
@@ -142,11 +145,12 @@ function animateEnemy(character) {
         for (let itemId=0; itemId < Obstacles['projectileList'].length; itemId++) {
             if (isColliding(Obstacles['projectileList'][itemId], enemy)) {
 
+                addToEffectList(enemy);
+
                 switch (char_index) {
                     case '0':
                     case '2':
                         Obstacles['projectileList'].splice(itemId, 1); // Projectile disappear on impact
-
                         break;
                     case '1':
 
@@ -224,8 +228,8 @@ function animate(character, Obstacles, FrameStats) {
     /*------------------ CHARACTER ---------------------------*/
     // character.update();
     character.draw(character.characterImg);
-    Obstacles['effectList'][0].update(25,13);
-    Obstacles['effectList'][0].draw();
+    // Obstacles['effectList'][0].update(25,13);
+    // Obstacles['effectList'][0].draw();
 
     /*------------------------------ PROJECTILES ---------------------------*/
     if (projectileId < Obstacles['projectileList'].length) {
@@ -262,7 +266,16 @@ function animate(character, Obstacles, FrameStats) {
             }
         }
     }
-
+    for (let effectId = 0;effectId< Obstacles['effectList'].length;effectId++){
+        Obstacles['effectList'][effectId].update();
+        Obstacles['effectList'][effectId].draw();
+        setTimeout(()=>{Obstacles['effectList'].splice(effectId,1)},800)
+        // for (let currentEffectId = effectId; currentEffectId < Obstacles['effectList'].length; currentEffectId ++) {
+        //     Obstacles['currentEffectId'][effectId].update();
+        //     Obstacles['currentEffectId'][effectId].draw();
+        //     setTimeout(()=>{Obstacles['effectList'].splice(currentEffectId,1)},800)
+        // }
+    }
 
     /*------------------------- ENEMY ----------------------------------*/
     animateEnemy(character);
@@ -287,8 +300,7 @@ effectImg.src = "resources/effects/flame_explode.png";
 
 
 Obstacles['effectList'] = [];
-Obstacles['effectList'].push( new Effect(effectImg,500,500,884.5/5,788/5,
-    884.5,788,))
+
 /*---------------- ENEMY INITIALIZATION --------*/
 Obstacles['enemyList'] = generateEnemy(1);
 
@@ -297,7 +309,6 @@ Obstacles['itemList'] = generateItem(1);
 
 /*---------------- PROJECTILE INITIALIZATION ---*/
 Obstacles['projectileList'] = [];
-// Obstacles['effectList'] = [explosion]
 
 /*------------------------------------------------------ PLAYER INITIALIZATION --------------------------------------------*/
 export let char_index = localStorage.getItem("character_index");
