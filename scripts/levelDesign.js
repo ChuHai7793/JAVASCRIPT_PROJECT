@@ -55,7 +55,7 @@ export function generateEnemy(level) {
     }
     catch(err) {
         console.log(err.message);
-        enemyList = enemyLevel9(enemyList);
+        enemyList = enemyLevel17(enemyList);
     }
 
     return enemyList
@@ -90,7 +90,7 @@ function enemyLevel4(enemyList){
     let temp_enemyList = addSingleEnemy(enemyList, ...enemyType.diagonal_1);
     temp_enemyList = addSingleEnemy(temp_enemyList, 'resources/enemy/enemy1.png',
         0, 0, 100, 80,
-        293, 155, Math.random() * 2 + 3, 60, NaN,NaN,NaN,'diagonal');
+        293, 155, Math.random() * 2 + 3, 60, NaN,NaN,NaN,NaN,'diagonal');
     temp_enemyList = addSingleEnemy(temp_enemyList, ...enemyType.diagonal_2);
     return temp_enemyList
 }
@@ -125,7 +125,7 @@ function enemyLevel9(enemyList){
 
     let temp_enemyList = addSingleEnemy(enemyList, 'resources/enemy/enemy1.png',
         700, 300, 100*ratio, 80*ratio,
-        293, 155, Math.random() * 2 + 2, -90, NaN,NaN,'circle');
+        293, 155, Math.random() * 2 + 2, -90, NaN,NaN,NaN,NaN,'circle');
 
 
     temp_enemyList = addSingleEnemy(temp_enemyList, ...enemyType.hover_horizontal_1);
@@ -182,7 +182,7 @@ function enemyLevel15(enemyList){
     return temp_enemyList
 }
 
-function enemyLevel16(enemyList){
+function enemyLevel1(enemyList){
 
     let temp_enemyList = addSingleEnemy(enemyList, ...enemyType.arc_1);
     temp_enemyList = addSingleEnemy(temp_enemyList, ...enemyType.arc_2);
@@ -191,7 +191,7 @@ function enemyLevel16(enemyList){
     return temp_enemyList
 }
 
-function enemyLevel1(enemyList){
+function enemyLevel17(enemyList){
 
     let temp_enemyList = addSingleEnemy(enemyList, ...enemyType.arc_1);
     temp_enemyList = addSingleEnemy(temp_enemyList, ...enemyType.arc_2);

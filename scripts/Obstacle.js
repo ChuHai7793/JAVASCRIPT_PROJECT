@@ -1,4 +1,4 @@
-import { ctx } from "./animation.js";
+import {ctxGame, gameFrame} from "./animation.js";
 
 
 export class Obstacle {
@@ -29,7 +29,7 @@ export class Obstacle {
 
     draw(){
 
-        ctx.strokeRect(this.x_hitbox,this.y_hitbox,this.width_hitbox,this.height_hitbox);
-        ctx.drawImage(this.ObstacleImg,this.frame *this.spriteWidth,0,this.spriteWidth,this.spriteHeight,this.x,this.y,this.width,this.height);
+        ctxGame.strokeRect(this.x_hitbox,this.y_hitbox,this.width_hitbox,this.height_hitbox);
+        ctxGame.drawImage(this.ObstacleImg,this.frame *this.spriteWidth,0,this.spriteWidth,this.spriteHeight,this.x,this.y,this.width,this.height);
     }
 }

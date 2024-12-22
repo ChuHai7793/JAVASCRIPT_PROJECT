@@ -1,5 +1,5 @@
 /*---------------- MAIN INITIALIZATION --------------------*/
-import {ctx,CANVAS_WIDTH,CANVAS_HEIGHT} from './animation.js'
+import {CANVAS_WIDTH, CANVAS_HEIGHT, char_index} from './animation.js'
 import {frameX,frameY} from './animation.js'
 import {OFFSET_X,OFFSET_Y} from './animation.js'
 
@@ -8,27 +8,40 @@ export const characterInfo = {
     0: {
         y_projectile_padding:15, // To match the y position of projectile to the hand/gun when shooting
         timeOutAnimation:1200,
-        timeOutProjectile:0
+        timeOutProjectile:0,
+        maxJumpHeight:200,
+        jumpSpd: 10,
+        gravity: 10,
+        speed: 2
     },
 
     1: {
         y_projectile_padding:0,
         timeOutAnimation:1400,
-        timeOutProjectile:750
+        timeOutProjectile:750,
+        maxJumpHeight:100,
+        jumpSpd: 10,
+        gravity: 7,
+        speed: 4
 
     },
 
     2: {
         y_projectile_padding:0,
         timeOutAnimation:600,
-        timeOutProjectile:400
+        timeOutProjectile:400,
+        maxJumpHeight:250,
+        jumpSpd: 10,
+        gravity: 15,
+        speed: 6
     },
 
 }
 
 
 export class Character {
-    constructor(characterResource,char_index){
+    constructor(ctxGame, characterResource,char_index){
+        this.ctxGame = ctxGame;
         this.x = OFFSET_X;
         this.y = OFFSET_Y;
         this.state = 'Start'
@@ -59,26 +72,10 @@ export class Character {
 
         this.speed = 2;
 
-        switch (char_index) {
-            case '0':
-                this.maxJumpHeight = 200;
-                this.jumpSpd = 10;
-                this.gravity = 10;
-                this.speed = 2;
-                break
-            case '1':
-                this.maxJumpHeight = 100;
-                this.jumpSpd = 10;
-                this.gravity = 7
-                this.speed = 4;
-                break;
-            case '2':
-                this.maxJumpHeight = 250;
-                this.jumpSpd = 10;
-                this.gravity = 15;
-                this.speed = 6;
-                break;
-        }
+        this.maxJumpHeight = characterInfo[char_index].maxJumpHeight;
+        this.jumpSpd = characterInfo[char_index].jumpSpd;
+        this.gravity = characterInfo[char_index].gravity;
+        this.speed = characterInfo[char_index].speed;
 
     }
     /* ------------------------------ RESET ------------------------------*/
@@ -163,7 +160,7 @@ export class Character {
                     }
                 }
 
-                this.setAnimation();
+                this.setAnimation(char_index);
             }
         },20)
     }
@@ -172,21 +169,21 @@ export class Character {
     /* -----------------------*/
     draw() {
         if (this.direction === 'left'){
-            ctx.save();
-            ctx.translate(CANVAS_WIDTH, 0); // Move the origin to the right edge
-            ctx.scale(-1, 1); // Flip the whole canvas
+            this.ctxGame.save();
+            this.ctxGame.translate(CANVAS_WIDTH, 0); // Move the origin to the right edge
+            this.ctxGame.scale(-1, 1); // Flip the whole canvas
 
             this.x_hitbox = CANVAS_WIDTH - this.width-this.x + 100;
             this.y_hitbox = this.y + 130;
             this.width_hitbox = this.width - 200;
             this.height_hitbox = this.height - 100;
-            ctx.strokeRect(this.x_hitbox  ,this.y_hitbox  ,this.width_hitbox ,this.height_hitbox)
+            this.ctxGame.strokeRect(this.x_hitbox  ,this.y_hitbox  ,this.width_hitbox ,this.height_hitbox)
 
-            ctx.drawImage(this.characterImg, frameX*this.spriteWidth , frameY*this.spriteHeight ,this.spriteWidth ,this.spriteHeight,
+            this.ctxGame.drawImage(this.characterImg, frameX*this.spriteWidth , frameY*this.spriteHeight ,this.spriteWidth ,this.spriteHeight,
                 CANVAS_WIDTH - this.width- this.x ,this.y ,this.width ,this.height);
 
             // RESTORE HITBOX COORDINATE
-            ctx.restore();
+            this.ctxGame.restore();
             this.x_hitbox = this.x + 100;
             this.y_hitbox = this.y +130;
             this.width_hitbox = this.width - 200;
@@ -198,17 +195,17 @@ export class Character {
             this.y_hitbox = this.y +130;
             this.width_hitbox = this.width - 200;
             this.height_hitbox = this.height -100;
-            ctx.strokeRect(this.x_hitbox ,this.y_hitbox , this.width_hitbox,this.height_hitbox)
+            this.ctxGame.strokeRect(this.x_hitbox ,this.y_hitbox , this.width_hitbox,this.height_hitbox)
 
 
-            ctx.drawImage(this.characterImg, frameX*this.spriteWidth , frameY*this.spriteHeight ,
+            this.ctxGame.drawImage(this.characterImg, frameX*this.spriteWidth , frameY*this.spriteHeight ,
                 this.spriteWidth ,this.spriteHeight,
                 this.x ,this.y ,this.width ,this.height);
         }
     }
 
-    setAnimation() {
-        let char_index = localStorage.getItem("character_index")
+    setAnimation(char_index) {
+        // let char_index = localStorage.getItem("character_index")
         this.characterImg.src = 'resources/Characters/char'+char_index+ '/'+this.state + '.png';
 
         switch (this.state) {
@@ -222,6 +219,7 @@ export class Character {
                 this.FrameStats.maxFrames = 4;
                 this.FrameStats.staggerFrames = 32;
                 break;
+
             case 'Shoot':
                 if (char_index === '0'){
                     this.FrameStats.maxFrames = 3;
@@ -234,10 +232,7 @@ export class Character {
                     this.FrameStats.staggerFrames = 15;
                 }
                 break;
-            // case 'Attack_3':
-            //     this.FrameStats.maxFrames = 5;
-            //     this.FrameStats.staggerFrames = 36;
-            //     break;
+
             case 'Jump':
                 this.FrameStats.maxFrames = 9;
                 this.FrameStats.staggerFrames = 20;
