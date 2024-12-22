@@ -30,11 +30,27 @@
 </div>
 
 
-<div id="next-level-transition"  >NEXT LEVEL </div>
-<!--class="next-level-transition"-->
+<div id="next-level-transition" >NEXT LEVEL</div>
 
+<div id="bullet-container">
+    <img src="resources/backgrounds/bullet_set.png" alt="bullet" id="bulletImg">
+</div>
+
+<div id="bullet-number"> </div>
+
+
+<audio  id='audio' src="resources/sounds/backgrounds/background_rush_point.mp3" > </audio>
 
 <script src="scripts/animation.js" type = 'module'> </script>
+
+<script>
+    const backgroundAudio = document.getElementById("audio");
+    backgroundAudio.volume = 0.5;
+    backgroundAudio.play();
+
+
+
+</script>
 
 </body>
 </html>

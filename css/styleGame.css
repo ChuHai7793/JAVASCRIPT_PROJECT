@@ -6,9 +6,9 @@ html, body {
 
     position: absolute;
     top: 90px;
-    left: 1400px;
-    width:100px;
-    height: 100px;
+    left: 1370px;
+    width:120px;
+    height: 80px;
 
 
     display: flex;
@@ -95,7 +95,7 @@ html, body {
 
 }
 
-#level-display{
+#level-display,#bullet-number{
     position: absolute;
     top: 10px;
     left: 600px;
@@ -118,6 +118,10 @@ html, body {
 
 
 /*------------------------------------- DEAD SCREEN - NEXT LEVEL TRANSITION -----------------------------------*/
+#next-level-transition{
+    position: absolute;
+    left: 5000px;
+}
 #dead-display-container,.next-level-transition{
     position: absolute;
     top: 0;
@@ -226,4 +230,25 @@ html, body {
         animation-name:none;
         /*transform: translateY(-700px);*/
     }
+}
+
+#bullet-container {
+    position: absolute;
+    left: 30px;
+    top: 50px;
+    width: 200px;
+    /*background: white;*/
+}
+#bulletImg{
+
+    width: 100px;
+    height: 100px;
+}
+
+#bullet-number{
+    top: 40px;
+    left: 90px;
+    width: 100px;
+    height: 100px;
+    font-size: 5rem;
 }

@@ -26,6 +26,11 @@ let score = 0;
 let level = 1;
 let health = 100;
 
+// IF localStorage.setItem('Ammo','3') => The actual number of ammo can be shot is 3 - 1 = 2
+// Because when press Shoot, the number of ammo will be reduced by 1
+// => the projectile condition check will miss a case. if (parseInt(localStorage.getItem('Ammo'))>0)
+localStorage.setItem('Ammo','0')
+document.getElementById("bullet-number").innerHTML = '0';
 /*---------------------------------------------- GENERAL FUNCTIONS -------------------------------------------------------*/
 
 function sortObjectByValue(obj) {
@@ -36,13 +41,30 @@ function sortObjectByValue(obj) {
     return Object.fromEntries(sortedEntries);
 }
 
+function changeBackground() {
+    if (level < 21) {
+        document.getElementById('background').style.backgroundImage = 'url("../resources/backgrounds/bg1.png")';
+    } else if (level >= 21 && level < 41) {
+        document.getElementById('background').style.backgroundImage = 'url("../resources/backgrounds/bg2.png")';
+    } else if (level >= 41 && level < 61) {
+        document.getElementById('background').style.backgroundImage = 'url("../resources/backgrounds/bg3.png")';
+    } else {
+        document.getElementById('background').style.backgroundImage = 'url("../resources/backgrounds/bg4.png")';
+    }
+}
 function updateScore() {
     // IF NEXT LEVEL RETURN TRUE, ELSE FALSE
     const scoreBoard = document.getElementById('score-board');
     const levelDisplay = document.getElementById('level-display');
-    // const scoreList = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10,11,12,13,14,15,16,17,18,19,20];
-    const scoreList = [3,6,9,12,15,18,21,24];
-    // const scoreList = [5,10,15,20,25];
+
+    let scoreList = [];
+    for (let i = 1; i < 25; i++) {
+        scoreList.push(i);
+    }
+    // for (let i = 3; i < 25; i+=3) {
+    //     scoreList.push(i);
+    // }
+
     score += 1;
     scoreBoard.innerText = score;
     // SET LEVEL
@@ -101,6 +123,9 @@ function isColliding(obj1, obj2) {
 
 /*------------------------------FUNCTION SUPPORTING animate(character, Obstacles, FrameStats)-----------------------------*/
 function slowDownAnimation(character, FrameStats) {
+
+
+
     if (gameFrame % FrameStats.staggerFrames === 0) {
 
         if (frameX < FrameStats.maxFrames) {
@@ -118,14 +143,22 @@ function slowDownAnimation(character, FrameStats) {
 }
 
 
+function addToEffectList(impactObject,char_index) {
 
-function addToEffectList(impactObject){
+    let effectImg = new Image();
+    switch(char_index) {
+        case '0':
+        case '1':
+            effectImg.src = "resources/effects/flame_explode.png";
+            break;
+        case '2':
+            effectImg.src = "resources/effects/flame_explode.png";
+            break;
+    }
+
     Obstacles['effectList'].push( new Effect(effectImg,impactObject.x - impactObject.width_hitbox/2,
         impactObject.y - impactObject.height_hitbox/2,774/5,788/5,
         774,788))
-
-
-
 }
 function animateEnemy(character) {
 
@@ -145,7 +178,7 @@ function animateEnemy(character) {
         for (let itemId=0; itemId < Obstacles['projectileList'].length; itemId++) {
             if (isColliding(Obstacles['projectileList'][itemId], enemy)) {
 
-                addToEffectList(enemy);
+                addToEffectList(enemy,char_index);
 
                 switch (char_index) {
                     case '0':
@@ -175,7 +208,6 @@ function animateEnemy(character) {
                 setTimeout(() => {
                     deadDisplayContainer.style.display = 'flex';
                 }, 1000)
-                // let name = prompt('INPUT CHAMPION NAME');
                 saveScoreToStorage(localStorage.getItem('playerName'), score);
             }
         }
@@ -208,6 +240,7 @@ function animateItem(character) {
 
                         // Reset character position
                         character.reset(character.x);
+                        changeBackground();
                     }, 2000) // Wait 3 seconds after create new enemies
 
                 }
@@ -221,62 +254,42 @@ function animateItem(character) {
 
 let projectileId = 0;
 function animate(character, Obstacles, FrameStats) {
-
     ctxGame.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
 
 
     /*------------------ CHARACTER ---------------------------*/
     // character.update();
     character.draw(character.characterImg);
-    // Obstacles['effectList'][0].update(25,13);
-    // Obstacles['effectList'][0].draw();
 
     /*------------------------------ PROJECTILES ---------------------------*/
-    if (projectileId < Obstacles['projectileList'].length) {
-        let currentProjectile = Obstacles['projectileList'][projectileId];
-        let tempProjectileList = Obstacles['projectileList'].slice(0, projectileId + 1);
-        // Check if the last projectile has travelled more than 300, if true, fire next projectile
-        if ((currentProjectile.x - currentProjectile.x_reset < 300 && currentProjectile.direction==='right')||
-        (currentProjectile.x_reset - currentProjectile.x < 300 && currentProjectile.direction==='left')){
-            for (let projectile of tempProjectileList) {
-                projectile.update(char_index);
-                projectile.draw(char_index);
-            }
-        } else {
-            projectileId++; // Increase projectileId also means that tempProjectileList will add next projectile to itself => Shoot new projectile
-        }
-    } else {
+    if (parseInt(localStorage.getItem('Ammo'))>0) { // Check whether there are ammo left.
+
         if (Obstacles['projectileList'].length !== 0 ){
             let lastProjectile = Obstacles['projectileList'][Obstacles['projectileList'].length-1];
 
             // Continue animation until all projectiles go max distance
             if  (
                 ((lastProjectile.x - lastProjectile.x_reset < lastProjectile.maxDistance && lastProjectile.direction==='right')||
-                (lastProjectile.x_reset - lastProjectile.x < lastProjectile.maxDistance && lastProjectile.direction==='left'))&&
+                    (lastProjectile.x_reset - lastProjectile.x < lastProjectile.maxDistance && lastProjectile.direction==='left'))&&
                 lastProjectile.x > 0 && lastProjectile.x < 1600
-                ){
+            ){
                 for (let projectile of Obstacles['projectileList']) {
                     projectile.update(char_index);
                     projectile.draw(char_index);
                 }
-            // Otherwise, reset projectileId and Obstacles['projectileList']
+                // Otherwise, reset projectileId and Obstacles['projectileList']
             } else {
                 projectileId = 0;
                 Obstacles['projectileList'] = [];
             }
         }
+        for (let effectId = 0;effectId< Obstacles['effectList'].length;effectId++){
+            Obstacles['effectList'][effectId].update();
+            Obstacles['effectList'][effectId].draw();
+            setTimeout(()=>{Obstacles['effectList'].splice(effectId,1)},800)
+            // setTimeout(()=>{Obstacles['effectList'].shift()},800)
+        }
     }
-    for (let effectId = 0;effectId< Obstacles['effectList'].length;effectId++){
-        Obstacles['effectList'][effectId].update();
-        Obstacles['effectList'][effectId].draw();
-        setTimeout(()=>{Obstacles['effectList'].splice(effectId,1)},800)
-        // for (let currentEffectId = effectId; currentEffectId < Obstacles['effectList'].length; currentEffectId ++) {
-        //     Obstacles['currentEffectId'][effectId].update();
-        //     Obstacles['currentEffectId'][effectId].draw();
-        //     setTimeout(()=>{Obstacles['effectList'].splice(currentEffectId,1)},800)
-        // }
-    }
-
     /*------------------------- ENEMY ----------------------------------*/
     animateEnemy(character);
 
@@ -294,8 +307,8 @@ function animate(character, Obstacles, FrameStats) {
 
 /*---------------- Obstacles['enemyList'],Obstacles['itemList'], Obstacles['projectileList'] INITIALIZATION ---------------*/
 export let Obstacles = {};
-let effectImg = new Image();
-effectImg.src = "resources/effects/flame_explode.png";
+// let effectImg = new Image();
+// effectImg.src = "resources/effects/flame_explode.png";
 
 
 

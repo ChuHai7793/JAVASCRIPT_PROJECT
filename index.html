@@ -28,13 +28,13 @@
     </li>
 
 </ul>
-
+<audio  id='audio' src="resources/sounds/backgrounds/background_rush_point.mp3" > </audio>
 <!--<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>-->
 <script src="scripts/interfaces/sweetAlert.js"></script>
 <script src='./scripts/animation_Character_Select.js'> </script>
 <script>
     // Create a prompt
-     function inputPlayerName() {
+    function inputPlayerName() {
         Swal.fire({
             title: 'ENTER GANGSTER NAME',
             input: 'text', // Type of input
@@ -46,13 +46,19 @@
                 localStorage.setItem('playerName', result.value);
                 // console.log(localStorage.getItem('playerName'));
                 window.location.href = 'PLAY_GAME.html';
-                
+
             }
             // else if (result.isDismissed) {
             //     Swal.fire('Prompt canceled!');
             // }
         });
     }
+
+    const backgroundAudio = document.getElementById("audio");
+    backgroundAudio.volume = 0.5;
+    backgroundAudio.play();
+
+
 
 
 </script>

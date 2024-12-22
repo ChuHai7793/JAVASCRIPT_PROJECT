@@ -7,22 +7,24 @@ import {OFFSET_X,OFFSET_Y} from './animation.js'
 export const characterInfo = {
     0: {
         y_projectile_padding:15, // To match the y position of projectile to the hand/gun when shooting
-        timeOutAnimation:1200,
+        timeOutAnimation:900,
         timeOutProjectile:0,
         maxJumpHeight:200,
-        jumpSpd: 10,
-        gravity: 10,
-        speed: 2
+        jumpSpd: 8,
+        gravity: 14,
+        speed: 2,
+        gunSound:'resources/sounds/guns/char0_autogun.wav',
     },
 
     1: {
         y_projectile_padding:0,
         timeOutAnimation:1400,
         timeOutProjectile:750,
-        maxJumpHeight:100,
+        maxJumpHeight:180,
         jumpSpd: 10,
-        gravity: 7,
-        speed: 4
+        gravity: 10,
+        speed: 2.5,
+        gunSound:'resources/sounds/guns/char1_handgun.wav',
 
     },
 
@@ -30,10 +32,11 @@ export const characterInfo = {
         y_projectile_padding:0,
         timeOutAnimation:600,
         timeOutProjectile:400,
-        maxJumpHeight:250,
-        jumpSpd: 10,
+        maxJumpHeight:160,
+        jumpSpd: 15,
         gravity: 15,
-        speed: 6
+        speed: 3,
+        gunSound:'resources/sounds/guns/char1_handgun.wav',
     },
 
 }
@@ -76,6 +79,9 @@ export class Character {
         this.jumpSpd = characterInfo[char_index].jumpSpd;
         this.gravity = characterInfo[char_index].gravity;
         this.speed = characterInfo[char_index].speed;
+
+        this.shootingSound = new Audio();
+        this.shootingSound.src = characterInfo[char_index].gunSound;
 
     }
     /* ------------------------------ RESET ------------------------------*/

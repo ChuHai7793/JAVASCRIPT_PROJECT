@@ -1,6 +1,6 @@
 import {Enemy} from "./Enemy.js";
 import {Item} from "./Item.js";
-import {CANVAS_WIDTH} from "./animation.js";
+import {CANVAS_WIDTH, char_index} from "./animation.js";
 
 
 
@@ -11,6 +11,8 @@ const enemyType = {
 
 
     horizontal_1:['resources/enemy/enemy1.png', 0, 400, 100*ratio, 80*ratio, 293, 155, 6, 0, NaN,NaN,NaN,NaN,'horizontal'],
+    horizontal_2:['resources/enemy/enemy1.png', 0, 600, 100*ratio, 80*ratio, 293, 155, 6, 0, NaN,NaN,NaN,NaN,'horizontal'],
+
     hover_vertical_1:['resources/enemy/enemy3.png', 500, 300, 100*ratio, 80*ratio, 218, 177, NaN, 90,NaN,0.5*Math.PI/180,NaN,NaN,'hover-vertical'],
 
 
@@ -25,6 +27,7 @@ const enemyType = {
 
     circle_1: ['resources/enemy/enemy1.png', 700, 300, 100*ratio, 80*ratio, 293, 155, NaN, -90, NaN,NaN,0.3,300,'circle'],
     circle_2: ['resources/enemy/enemy1.png', 500, 300, 100*ratio, 80*ratio, 293, 155, NaN, -90, NaN,NaN,0.3,300,'circle'],
+    circle_3: ['resources/enemy/enemy1.png', 300, 400, 100*ratio, 80*ratio, 293, 155, NaN, -90, NaN,NaN,0.3,200,'circle'],
 
     arc_1:['resources/enemy/enemy1.png', 700, 500, 100*ratio, 80*ratio, 293, 155, 0.8, -90, NaN,NaN,0.3,120,'arc'],
     arc_2:['resources/enemy/enemy1.png', 700, 500, 100*ratio, 80*ratio, 293, 155, 0.8, 90, NaN,NaN,0.3,120,'arc'],
@@ -35,7 +38,9 @@ const enemyType = {
 
 
 
-/*---------------------------------- ENEMY --------------------------------------*/
+/*------------------------------------------------------- ENEMY ------------------------------------------------------------*/
+
+/*--------------------- ALLOW BULLET ------------------------*/
 export function addSingleEnemy(enemyList, ImgSrc,
                         x, y, width, height,
                         spriteWidth, spriteHeight, speed, angle,
@@ -55,7 +60,7 @@ export function generateEnemy(level) {
     }
     catch(err) {
         console.log(err.message);
-        enemyList = enemyLevel17(enemyList);
+        enemyList = enemyLevel20(enemyList);
     }
 
     return enemyList
@@ -70,21 +75,21 @@ function enemyLevel(enemyList){
     return temp_enemyList;
 }
 
-
 function enemyLevel2(enemyList){
     let temp_enemyList = addSingleEnemy(enemyList, ...enemyType.hover_vertical_1);
     temp_enemyList =  addSingleEnemy(temp_enemyList, ...enemyType.horizontal_1);
+    temp_enemyList =  addSingleEnemy(temp_enemyList, ...enemyType.vertical_2);
     return temp_enemyList
 }
 
 function enemyLevel3(enemyList){
     let temp_enemyList =  addSingleEnemy(enemyList,...enemyType.hover_horizontal_1);
-    temp_enemyList = temp_enemyList = addSingleEnemy(temp_enemyList, 'resources/enemy/enemy1.png',...enemyType.vertical_1);
+    temp_enemyList =  addSingleEnemy(temp_enemyList,...enemyType.hover_horizontal_2);
+    temp_enemyList = temp_enemyList = addSingleEnemy(temp_enemyList, ...enemyType.vertical_1);
     temp_enemyList = addSingleEnemy(temp_enemyList,...enemyType.hover_vertical_1);
 
     return temp_enemyList;
 }
-
 
 function enemyLevel4(enemyList){
     let temp_enemyList = addSingleEnemy(enemyList, ...enemyType.diagonal_1);
@@ -92,6 +97,7 @@ function enemyLevel4(enemyList){
         0, 0, 100, 80,
         293, 155, Math.random() * 2 + 3, 60, NaN,NaN,NaN,NaN,'diagonal');
     temp_enemyList = addSingleEnemy(temp_enemyList, ...enemyType.diagonal_2);
+    temp_enemyList = addSingleEnemy(temp_enemyList, ...enemyType.hover_horizontal_2);
     return temp_enemyList
 }
 
@@ -103,19 +109,20 @@ function enemyLevel5(enemyList){
 function enemyLevel6(enemyList){
     let temp_enemyList = addSingleEnemy(enemyList, ...enemyType.sin_1);
     temp_enemyList = addSingleEnemy(temp_enemyList, ...enemyType.hover_vertical_1);
+    temp_enemyList = addSingleEnemy(temp_enemyList, ...enemyType.hover_horizontal_2);
     return temp_enemyList
 }
 
 function enemyLevel7(enemyList){
     let temp_enemyList = addSingleEnemy(enemyList, ...enemyType.sin_1);
-    temp_enemyList = addSingleEnemy(temp_enemyList, ...enemyType.hover_horizontal_1);
+    temp_enemyList = addSingleEnemy(temp_enemyList, ...enemyType.hover_vertical_1);
+    temp_enemyList = addSingleEnemy(temp_enemyList, ...enemyType.circle_3);
     return temp_enemyList
 }
 
 function enemyLevel8(enemyList){
 
     let temp_enemyList = addSingleEnemy(enemyList,...enemyType.circle_1 );
-
     temp_enemyList = addSingleEnemy(temp_enemyList, ...enemyType.hover_horizontal_1);
     temp_enemyList = addSingleEnemy(temp_enemyList, ...enemyType.diagonal_1);
     return temp_enemyList
@@ -123,15 +130,12 @@ function enemyLevel8(enemyList){
 
 function enemyLevel9(enemyList){
 
-    let temp_enemyList = addSingleEnemy(enemyList, 'resources/enemy/enemy1.png',
-        700, 300, 100*ratio, 80*ratio,
-        293, 155, Math.random() * 2 + 2, -90, NaN,NaN,NaN,NaN,'circle');
-
-
+    let temp_enemyList = addSingleEnemy(enemyList, ...enemyType.circle_2);
     temp_enemyList = addSingleEnemy(temp_enemyList, ...enemyType.hover_horizontal_1);
     temp_enemyList = addSingleEnemy(temp_enemyList, ...enemyType.vertical_1);
     return temp_enemyList
 }
+
 function enemyLevel10(enemyList){
 
     let temp_enemyList = addSingleEnemy(enemyList, ...enemyType.circle_1);
@@ -157,15 +161,16 @@ function enemyLevel12(enemyList){
     temp_enemyList = addSingleEnemy(temp_enemyList, ...enemyType.diagonal_2);
     temp_enemyList = addSingleEnemy(temp_enemyList, ...enemyType.hover_horizontal_2);
     temp_enemyList = addSingleEnemy(temp_enemyList, ...enemyType.vertical_1);
-    // temp_enemyList = addSingleEnemy(temp_enemyList, ...enemyType.vertical_2);
     return temp_enemyList
 }
+
 function enemyLevel13(enemyList){
 
     let temp_enemyList = addSingleEnemy(enemyList, ...enemyType.arc_1);
     temp_enemyList = addSingleEnemy(temp_enemyList, ...enemyType.arc_2);
     return temp_enemyList
 }
+
 function enemyLevel14(enemyList){
 
     let temp_enemyList = addSingleEnemy(enemyList, ...enemyType.arc_1);
@@ -182,7 +187,7 @@ function enemyLevel15(enemyList){
     return temp_enemyList
 }
 
-function enemyLevel1(enemyList){
+function enemyLevel16(enemyList){
 
     let temp_enemyList = addSingleEnemy(enemyList, ...enemyType.arc_1);
     temp_enemyList = addSingleEnemy(temp_enemyList, ...enemyType.arc_2);
@@ -195,14 +200,78 @@ function enemyLevel17(enemyList){
 
     let temp_enemyList = addSingleEnemy(enemyList, ...enemyType.arc_1);
     temp_enemyList = addSingleEnemy(temp_enemyList, ...enemyType.arc_2);
-    temp_enemyList = addSingleEnemy(temp_enemyList, ...enemyType.arc_3);
+    temp_enemyList = addSingleEnemy(temp_enemyList, ...enemyType.arc_3)
+
     temp_enemyList = addSingleEnemy(temp_enemyList, ...enemyType.circle_1);
+    temp_enemyList = addSingleEnemy(temp_enemyList, ...enemyType.vertical_1);
+    temp_enemyList = addSingleEnemy(temp_enemyList, ...enemyType.vertical_2);
     return temp_enemyList
 }
 
+function enemyLevel18(enemyList){
 
+    let temp_enemyList = addSingleEnemy(enemyList, ...enemyType.arc_1);
+    temp_enemyList = addSingleEnemy(temp_enemyList, ...enemyType.arc_2);
+    temp_enemyList = addSingleEnemy(temp_enemyList, ...enemyType.arc_3);
 
+    temp_enemyList = addSingleEnemy(temp_enemyList, ...enemyType.circle_1);
+    temp_enemyList =  addSingleEnemy(temp_enemyList, ...enemyType.horizontal_1);
+    temp_enemyList =  addSingleEnemy(temp_enemyList, ...enemyType.hover_horizontal_2);
+    return temp_enemyList
+}
 
+function enemyLevel19(enemyList){
+
+    let temp_enemyList = addSingleEnemy(enemyList, ...enemyType.sin_1);
+    temp_enemyList = addSingleEnemy(temp_enemyList, ...enemyType.arc_1);
+    temp_enemyList = addSingleEnemy(temp_enemyList, ...enemyType.arc_3);
+    temp_enemyList = addSingleEnemy(temp_enemyList, ...enemyType.hover_horizontal_2);
+    temp_enemyList =  addSingleEnemy(temp_enemyList, ...enemyType.horizontal_1);
+    return temp_enemyList
+}
+
+function enemyLevel20(enemyList){
+
+    let temp_enemyList = addSingleEnemy(enemyList, ...enemyType.sin_1);
+    temp_enemyList = addSingleEnemy(temp_enemyList, ...enemyType.circle_3);
+    temp_enemyList = addSingleEnemy(temp_enemyList, ...enemyType.arc_3);
+    temp_enemyList = addSingleEnemy(temp_enemyList, ...enemyType.hover_horizontal_2);
+    temp_enemyList =  addSingleEnemy(temp_enemyList, ...enemyType.circle_1);
+    return temp_enemyList
+}
+
+/*------------------------------------- ALLOW BULLET -------------------------------*/
+
+// NOTICE:
+// IF localStorage.setItem('Ammo','3') => The actual number of ammo can be shot is 3 - 1 = 2
+// Because when press Shoot, the number of ammo will be reduced by 1
+// => the projectile condition check will miss a case. if (parseInt(localStorage.getItem('Ammo'))>0)
+
+function enemyLevel21(enemyList){
+    switch(localStorage.getItem("character_index")) {
+        case '0':
+            localStorage.setItem('Ammo','6'); // Shoot 5 times
+            break;
+        case '1':
+            localStorage.setItem('Ammo','2');// Shoot 1 times
+            break;
+        case '2':
+            localStorage.setItem('Ammo','6');// Shoot 5 times
+            break;
+    }
+    document.getElementById("bullet-number").innerHTML = localStorage.getItem("Ammo") - 1;
+
+    let temp_enemyList = addSingleEnemy(enemyList, ...enemyType.sin_1)
+    temp_enemyList =  addSingleEnemy(temp_enemyList, ...enemyType.circle_1);
+    temp_enemyList = addSingleEnemy(temp_enemyList, ...enemyType.circle_2);
+    temp_enemyList = addSingleEnemy(temp_enemyList, ...enemyType.circle_3);
+    temp_enemyList = addSingleEnemy(temp_enemyList, ...enemyType.arc_2);
+    temp_enemyList = addSingleEnemy(temp_enemyList, ...enemyType.arc_3);
+    temp_enemyList = addSingleEnemy(temp_enemyList, ...enemyType.hover_horizontal_1);
+    temp_enemyList = addSingleEnemy(temp_enemyList, ...enemyType.hover_horizontal_2);
+
+    return temp_enemyList
+}
 
 
 
