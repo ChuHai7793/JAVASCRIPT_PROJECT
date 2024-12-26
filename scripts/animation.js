@@ -58,12 +58,12 @@ function updateScore() {
     const levelDisplay = document.getElementById('level-display');
 
     let scoreList = [];
-    for (let i = 1; i < 25; i++) {
-        scoreList.push(i);
-    }
-    // for (let i = 3; i < 25; i+=3) {
+    // for (let i = 1; i < 25; i++) {
     //     scoreList.push(i);
     // }
+    for (let i = 3; i < 25; i+=3) {
+        scoreList.push(i);
+    }
 
     score += 1;
     scoreBoard.innerText = score;

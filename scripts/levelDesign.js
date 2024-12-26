@@ -60,14 +60,14 @@ export function generateEnemy(level) {
     }
     catch(err) {
         console.log(err.message);
-        enemyList = enemyLevel20(enemyList);
+        enemyList = enemyLevel22(enemyList);
     }
 
     return enemyList
 }
 
 /*------------------------- LEVEL DESIGN ENEMY ---------------------------------*/
-function enemyLevel(enemyList){
+function enemyLevel1(enemyList){
 
     let temp_enemyList = addSingleEnemy(enemyList,...enemyType.vertical_1);
     temp_enemyList =  addSingleEnemy(temp_enemyList,...enemyType.horizontal_1);
@@ -233,10 +233,11 @@ function enemyLevel19(enemyList){
 function enemyLevel20(enemyList){
 
     let temp_enemyList = addSingleEnemy(enemyList, ...enemyType.sin_1);
+    temp_enemyList =  addSingleEnemy(temp_enemyList, ...enemyType.circle_1);
     temp_enemyList = addSingleEnemy(temp_enemyList, ...enemyType.circle_3);
     temp_enemyList = addSingleEnemy(temp_enemyList, ...enemyType.arc_3);
     temp_enemyList = addSingleEnemy(temp_enemyList, ...enemyType.hover_horizontal_2);
-    temp_enemyList =  addSingleEnemy(temp_enemyList, ...enemyType.circle_1);
+
     return temp_enemyList
 }
 
@@ -273,7 +274,62 @@ function enemyLevel21(enemyList){
     return temp_enemyList
 }
 
+function enemyLevel22(enemyList){
+    switch(localStorage.getItem("character_index")) {
+        case '0':
+            localStorage.setItem('Ammo','8'); // Shoot 7 times
+            break;
+        case '1':
+            localStorage.setItem('Ammo','2');// Shoot 1 times
+            break;
+        case '2':
+            localStorage.setItem('Ammo','8');// Shoot 7 times
+            break;
+    }
+    document.getElementById("bullet-number").innerHTML = localStorage.getItem("Ammo") - 1;
 
+    let temp_enemyList = addSingleEnemy(enemyList, ...enemyType.sin_1)
+    temp_enemyList =  addSingleEnemy(temp_enemyList, ...enemyType.vertical_1);
+    temp_enemyList =  addSingleEnemy(temp_enemyList, ...enemyType.circle_1);
+    temp_enemyList = addSingleEnemy(temp_enemyList, ...enemyType.circle_2);
+    temp_enemyList = addSingleEnemy(temp_enemyList, ...enemyType.circle_3);
+    temp_enemyList = addSingleEnemy(temp_enemyList, ...enemyType.arc_1);
+    temp_enemyList = addSingleEnemy(temp_enemyList, ...enemyType.arc_2);
+    temp_enemyList = addSingleEnemy(temp_enemyList, ...enemyType.arc_3);
+    temp_enemyList = addSingleEnemy(temp_enemyList, ...enemyType.hover_horizontal_1);
+    temp_enemyList = addSingleEnemy(temp_enemyList, ...enemyType.hover_horizontal_2);
+
+    return temp_enemyList
+}
+
+function enemyLevel23(enemyList){
+    switch(localStorage.getItem("character_index")) {
+        case '0':
+            localStorage.setItem('Ammo','8'); // Shoot 7 times
+            break;
+        case '1':
+            localStorage.setItem('Ammo','2');// Shoot 1 times
+            break;
+        case '2':
+            localStorage.setItem('Ammo','8');// Shoot 7 times
+            break;
+    }
+    document.getElementById("bullet-number").innerHTML = localStorage.getItem("Ammo") - 1;
+
+    let temp_enemyList = addSingleEnemy(enemyList, ...enemyType.sin_1)
+    temp_enemyList =  addSingleEnemy(temp_enemyList, ...enemyType.vertical_1);
+    temp_enemyList =  addSingleEnemy(temp_enemyList, ...enemyType.circle_1);
+    temp_enemyList = addSingleEnemy(temp_enemyList, ...enemyType.circle_2);
+    temp_enemyList = addSingleEnemy(temp_enemyList, ...enemyType.circle_3);
+    temp_enemyList = addSingleEnemy(temp_enemyList, ...enemyType.arc_1);
+    temp_enemyList = addSingleEnemy(temp_enemyList, ...enemyType.arc_2);
+    temp_enemyList = addSingleEnemy(temp_enemyList, ...enemyType.arc_3);
+    temp_enemyList = addSingleEnemy(temp_enemyList, ...enemyType.diagonal_1);
+    temp_enemyList = addSingleEnemy(temp_enemyList, ...enemyType.diagonal_2);
+    temp_enemyList = addSingleEnemy(temp_enemyList, ...enemyType.hover_horizontal_2);
+
+    return temp_enemyList
+}
 
 
 /*---------------------------------- ITEM --------------------------------------*/
