@@ -61,7 +61,7 @@ function updateScore() {
     // for (let i = 1; i < 25; i++) {
     //     scoreList.push(i);
     // }
-    for (let i = 3; i < 25; i+=3) {
+    for (let i = 3; i < 300; i+=3) {
         scoreList.push(i);
     }
 

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ôn tập 2</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        td, th {
+            border: 1px solid #dddddd;
+        }
+
+        th {
+            background: blue;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+<!--table>tr>th*4-->
+<!--<table border="1">-->
+<!--    <tr>-->
+<!--        <th>Mã sản phẩm</th>-->
+<!--        <th>Tên sản phẩm</th>-->
+<!--        <th>Giá sản phẩm</th>-->
+<!--        <th>Số lượng</th>-->
+<!--    </tr>-->
+<!--</table>-->
+<div id="resultDiv"></div>
+<script>
+
+    // class là một khuôn mẫu hay bản thiết kế cho các đối tượng
+    // nó sẽ khai báo các thuộc tính và hành vi chung chung cho mọi đối tượng
+    // PascalCase
+    class DienThoai {
+        constructor(masp, ten, gia, soLuong) {
+            // Khai báo thuộc tính
+            this.masp = masp;
+            this.ten = ten;
+            this.gia = gia;
+            this.soLuong = soLuong;
+        }
+
+        // method (Phương thức)
+        nhacChuong(msg) {
+            console.log(msg);
+        }
+    }
+    const apple = new DienThoai('SP001', 'iPhone 16', 1000, 98);
+    const xiaomi = new DienThoai('SP002', 'Xiaomi ..', 400, 50);
+    const samsung = new DienThoai('SS003', 'Samsung S22', 950, 199);
+    console.log(apple);
+    apple.nhacChuong('Chim hót');
+    samsung.nhacChuong('Chuông gió');
+    xiaomi.nhacChuong('Đàn hạc');
+    const phones = [];
+    phones.push(apple);
+    phones.push(xiaomi);
+    phones.push(samsung);
+    phones.push(new DienThoai('OP004', 'Oppo ..', 450, 25));
+    const resultDiv = document.getElementById("resultDiv");
+    updatePage();
+
+    function updatePage(){
+        let items = '<table><tr><th>Mã sản phẩm</th><th>Tên sản phẩm</th><th>Giá</th><th>Số lượng</th></tr>';
+        for (let i = 0; i < phones.length; i++) {
+            // template literal ` backtick
+            // items += "<tr><td>" + products[i] + "</td></tr>";
+            items += `<tr>
+                    <td>${phones[i].masp} <button onclick="deleteFunction(${i});"> Edit </button></td>
+                    <td>${phones[i].ten}</td>
+                    <td>$${phones[i].gia}</td>
+                    <td>${phones[i].soLuong}</td>
+                </tr>`;
+        }
+        items += '</table>';
+        items += `<p>Tổng số sản phẩm: ${phones.length}</p>`;
+        resultDiv.innerHTML = items;
+    }
+
+    function deleteFunction(index){
+        console.log( phones.splice(index, 1));
+        updatePage();
+
+    }
+</script>
+</body>
+</html>
